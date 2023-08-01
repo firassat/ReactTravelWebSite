@@ -1,0 +1,13 @@
+.css-1xhypcz-MuiStack-root>.MuiTextField-root {
+margin-left: -1px;
+border: none;
+outline: none;
+}
+.css-i4bv87-MuiSvgIcon-root {
+    color:var(--main-color);
+}
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}
+.css-1xhypcz-MuiStack-root>.MuiTextField-root {
+min-width: 150px !important;}

@@ -1,0 +1,240 @@
+.searchbar {
+    position: relative;
+    width: 97%; 
+    font-size: 20px;
+}
+input {
+    width: 90%;
+    padding-left: 55px;
+    padding-right: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 30px;
+    outline: none;
+    border: none;
+    background-color: rgb(233 233 233);
+    width: 100%; 
+}
+.main::placeholder {
+    font-size: 20px;
+    color: black;
+}
+.search-icon {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+}
+input.hotelsearchbar {
+    background-color: white;
+    width: 100%;
+}
+input.tripsearchbar {
+    background-color: rgba(255,255,255,0.6);
+    border-radius: 0 45px;
+    border: 2px solid white;
+}
+input.trips p {
+    color: blueviolet;
+}
+
+/* hotel searcbar */
+
+.hotelsearchbar {
+    display: flex;
+    background-color: azure;
+    border-radius: 10px 30px 30px 30px;
+    width: 97%;
+    margin: auto;
+}
+@media (max-width: 1000px) {
+    .hotelsearchbar {
+        flex-direction: column;
+        background-color: rgba(255,255,255,0.5);
+    }
+} 
+
+.hotelsearchbar .searchbar{
+    width: 50%;
+}
+@media (max-width:1000px) {
+    .hotelsearchbar .searchbar {
+        width: 100%;
+    }
+}
+.hotelsearchbar .date {
+    display: flex;
+    border-left: 2px solid var(--main-color);
+    border-right: 2px solid var(--main-color);
+    justify-content: center;
+}
+.selectperson {
+    width: 300px;
+    height: 70px;
+    overflow: hidden;
+    text-align: center;
+}
+@media (max-width:1000px) {
+    .selectperson {
+        width: 100%;
+    }
+}
+.searchbutton {
+    background-color: var(--main-color);
+    padding-top: 23px;
+    padding-bottom: 23px;
+    padding-left: 18px;
+    padding-right: 18px;
+    border-radius: 0 30px 30px 0;
+    text-align: center;
+}
+.searchbutton button {
+    font-size: 18px;
+    background-color: transparent;
+    color: white;
+    width: 100px;
+}
+
+/*flight searcbar*/
+.flightsearchbar {
+    width: 97%;
+    margin: auto;
+}
+.one-way {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+}
+@media (max-width: 1000px) {
+    .one-way {
+        flex-wrap: wrap;
+        background-color: rgba(255,255,255,0.5);
+    }
+} 
+.round-trip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+}
+@media (max-width: 1073px) {
+    .round-trip {
+        flex-wrap: wrap;
+        background-color: rgba(255,255,255,0.4);
+    }
+} 
+
+.one-way .selectcountry{
+    width: 33%;
+}
+@media (max-width: 1000px) {
+    .one-way .selectcountry {
+        width: 50%;
+        text-align: center;
+    }
+} 
+.round-trip .selectcountry{
+    width: 25%;
+}
+@media (max-width: 1000px) {
+    .round-trip .selectcountry{
+        width: 50%;
+    }
+}
+@media (max-width: 600px) {
+    .round-trip .selectcountry{
+        width: 100%;
+        text-align: center;
+    }
+    .one-way .selectcountry{
+        width: 100%;
+        text-align: center;
+    }
+} 
+.flightsearchbar button {
+    color: white;
+    font-size: 20px;
+    margin: 20px;
+}
+.clicked {
+    border-bottom: 2px solid white;
+}
+.hidden {
+    display: none;
+}
+.searchbut {
+    margin-left: 70px;
+    border-radius: 0 20px 20px 0;
+    background-color: var(--main-color);
+    text-align: center;
+}
+@media (max-width: 1073px) {
+    .round-trip .searchbut {
+        width: 100%;
+        margin-left: 0px;
+    }
+} 
+@media (max-width: 1000px) {
+    .one-way .searchbut {
+        width: 100%;
+        margin-left: 0px;
+    }
+
+} 
+/*attraction searchbar*/
+.attractionsearchbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(144 157 167 / 90%);
+    border-radius: 30px;
+    width: 97%;
+}
+@media (max-width: 870px ){
+    .attractionsearchbar{
+        flex-wrap: wrap;
+    }
+}
+input.attractionsearchbar {
+    background-color: rgb(233 233 233);
+}
+.attractionsearchbar .searchbar {
+    width: 60%;
+}
+@media (max-width: 870px ){
+    .attractionsearchbar .searchbar {
+        width: 100%;
+    }
+}
+.attractionsearchbar span {
+    font-size: 20px;
+    color: whitesmoke
+}
+.attractionsearchbar .findbutton {
+    width: 100px;
+    background-color: var(--main-color);
+    text-align: center;
+    padding: 21px 10px;
+    margin-left: 30px;
+    font-size: 18px;
+    border-radius: 30px;
+}
+@media (max-width: 870px ){
+    .attractionsearchbar .findbutton {
+        width: 100%;
+        margin-left: 0px;
+    }
+}
+.attractionsearchbar .findbutton button {
+    color: white;
+}
+.attractionsearchbar .slider {
+    margin-left: 10px;
+}
+@media (max-width: 870px ){
+    .attractionsearchbar .slider {
+        margin: auto;
+    }
+}

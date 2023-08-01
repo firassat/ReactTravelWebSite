@@ -1,0 +1,38 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.pagination-container-active {
+  font-weight: bolder;
+}
+.pagination-container a {
+  border: none !important;
+  background: none !important;
+}
+.deletebutoom.edit {
+  background-color: darkgray;
+}
+.deletebutoom {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 10px;
+  color: white;
+  border-radius: 4px;
+  background-color: #cb3100;
+}
+
+.deletebutoomShow {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 10px;
+  color: white;
+  border-radius: 4px;
+  width: 75px;
+  height: 30px;
+  align-items: center;
+
+  background-color: #cb3100;
+}
