@@ -27,15 +27,15 @@ const Topbar = (props) => {
 
   async function getNav() {
     axios
-      .get("http://127.0.0.1:8000/api/admin/showAttractionUpdates")
+      .get("http://127.0.0.1:8000/api/admin/getUpdatesList")
       .then((response) => {
-        setRepositories(response.data.data);
+        setRepositories(response.data);
       });
   }
   useEffect(() => {
     getNav();
   }, [nav]);
-
+  console.log(repositories);
   const navHandl = () => {
     setnav((priv) => !priv);
   };
@@ -111,9 +111,10 @@ const Topbar = (props) => {
               maxHeight: "50%",
               overflow: "auto",
               zIndex: "5",
+              border: "2px solid gray",
             }}
           >
-            {repositories && (
+            {repositories.data && (
               <Box
                 gridColumn="span 12"
                 gridRow="span 2"
@@ -121,7 +122,7 @@ const Topbar = (props) => {
                 p="10px 15px"
                 alignItems={"center"}
               >
-                {repositories.map((e, i) => (
+                {repositories.data.map((e, i) => (
                   <Link
                     to={`/dash/nav`}
                     state={{ repo: e }}
@@ -136,11 +137,12 @@ const Topbar = (props) => {
                       p="15px 20px"
                     >
                       <Box color={colors.greenAccent[500]} px={"15px"}>
-                        <Typography>{e.name}</Typography>
+                        <Typography>{e.type}</Typography>
                       </Box>
                       {}
                       <Box color={colors.grey[100]} px={"15px"}>
-                        <Typography color={colors.grey[100]}>
+                        <Typography>{e.admin.user_name}</Typography>
+                        <Typography fontSize={"10px"}>
                           {getDate(e.created_at)}
                         </Typography>
                       </Box>
@@ -176,7 +178,11 @@ const Topbar = (props) => {
             right="121px"
             top={"20px"}
           >
-            {1 ? <Brightness1Icon fontSize="8px" /> : ""}
+            {!repositories.is_all_seen ? (
+              <Brightness1Icon fontSize="8px" />
+            ) : (
+              ""
+            )}
           </Box>
         )}
         <IconButton>

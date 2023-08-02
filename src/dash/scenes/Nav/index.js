@@ -8,15 +8,20 @@ function Nav() {
   const location = useLocation();
   let [data, setdata] = useState([]);
   const repo = location.state.repo;
+  let url;
+  if (repo.type === "attraction_company")
+    url = "http://127.0.0.1:8000/api/admin/getUpdatingDetails?id=";
+  else if (repo.type === "trip_company")
+    url = "http://127.0.0.1:8000/api/admin/getTripUpdatingDetails?id=";
 
   async function getUsers() {
     await axios
-      .get("http://127.0.0.1:8000/api/admin/getUpdatingDetails?id=" + repo.id)
+      .get(url + repo.id)
       .then((response) => response.data)
       .then((data) => {
         setdata(data);
       });
-    console.log(repo);
+    console.log(repo.id);
   }
   useEffect(() => {
     getUsers();

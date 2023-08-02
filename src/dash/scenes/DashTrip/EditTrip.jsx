@@ -8,6 +8,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
+import GetCity from "../../components/getCity";
 
 const EditTrip = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -19,19 +20,26 @@ const EditTrip = () => {
 
   const initialValues = {
     name: data.name,
-    // email: data.email,
-    // phone_number: data.phone_number,
-    // details: data.details,
-    // adult_ability_per_day: data.adult_ability_per_day,
-    // adult_price: data.adult_price,
+    email: data.email,
+    phone_number: data.phone_number,
+    details: data.details,
+    adult_ability_per_day: data.adult_ability_per_day,
+    adult_price: data.adult_price,
     // available_days: data.available_days,
-    // child_ability_per_day: data.child_ability_per_day,
-    // child_price: data.child_price,
-    // close_at: data.close_at,
-    // location: data.location,
+    child_ability_per_day: data.child_ability_per_day,
+    child_price: data.child_price,
+    close_at: data.close_at,
+    location: data.location,
     // num_of_ratings: data.num_of_ratings,
-    // open_at: data.open_at,
-    // website_url: data.website_url,
+    open_at: data.open_at,
+    website_url: data.website_url,
+    Saturday: data.Saturday,
+    Sunday: data.Sunday,
+    Monday: data.Monday,
+    Tuesday: data.Tuesday,
+    Wednesday: data.Wednesday,
+    Thursday: data.Thursday,
+    Friday: data.Friday,
   };
 
   const handleFormSubmit = async (values) => {
@@ -87,6 +95,7 @@ const EditTrip = () => {
     <Box m="40px auto" width="70%">
       <Header title="Edit Attraction" />
       <BackButtom />
+
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -109,6 +118,7 @@ const EditTrip = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
+              <GetCity />
               <TextField
                 variant="filled"
                 type="text"
@@ -121,7 +131,7 @@ const EditTrip = () => {
                 helperText={touched.name && errors.name}
                 sx={{ gridColumn: "span 2" }}
               />
-              {/* <TextField
+              <TextField
                 fullWidth
                 variant="filled"
                 type="text"
@@ -160,7 +170,7 @@ const EditTrip = () => {
                 helperText={touched.website_url && errors.website_url}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
+              {/* <TextField
                 fullWidth
                 variant="filled"
                 type="phone"

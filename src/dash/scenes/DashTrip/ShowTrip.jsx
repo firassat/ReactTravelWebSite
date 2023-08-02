@@ -22,9 +22,10 @@ function ShowTrip() {
       await axios
         .get("http://127.0.0.1:8000/api/admin/getTripCompanyDetails?id=" + id)
         .then((response) => response.data)
+        .then((data) => data.data)
         .then((data) => {
-          setdata(data.data);
-          setid(id);
+          setdata(data);
+          setid(data.id);
         });
     } else {
       await axios
@@ -35,9 +36,10 @@ function ShowTrip() {
           },
         })
         .then((response) => response.data)
+        .then((data) => data.data)
         .then((data) => {
-          setdata(data.data);
-          setid(data.data.id);
+          setdata(data);
+          setid(data.id);
         });
     }
   }
@@ -54,9 +56,10 @@ function ShowTrip() {
           id
       )
       .then((response) => response.data)
+      .then((data) => data.data)
       .then((data) => {
-        setTrip(data.data.data);
-        setPageCount(data.data.last_page);
+        data && setTrip(data.data);
+        data && setPageCount(data.last_page);
       });
   }
 
@@ -68,7 +71,7 @@ function ShowTrip() {
     setPageOffset(page);
   };
 
-  if (data === "") {
+  if (!data) {
     return (
       <Box
         sx={{

@@ -45,6 +45,7 @@ const Dashboard = () => {
   useEffect(() => {
     getCity();
   }, [cityid]);
+  
   return (
     <Box m="20px" mx="50px">
       {/* HEADER */}
