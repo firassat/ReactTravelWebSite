@@ -9,7 +9,7 @@ function TripCompany() {
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "id", headerName: "ID", flex: 1 },
     {
       field: "name",
       headerName: "Name",

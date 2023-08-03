@@ -36,3 +36,33 @@
 
   background-color: #cb3100;
 }
+.inputDays {
+  position: fixed;
+  width: 30%;
+  left: 14%;
+  top: 10%;
+  height: 80%;
+  border: 1px solid gray;
+  display: flex;
+  background-color: black;
+  border-radius: 30px;
+  z-index: 10;
+  opacity: 1;
+}
+
+.inputDays form {
+  overflow: auto;
+  padding: 25px;
+  width: 100%;
+}
+.inputDays form::-webkit-scrollbar {
+  width: 0;
+}
+.inputDays input {
+  padding: 15px;
+  margin: 10px;
+  width: 95%;
+}
+.inputDays input::placeholder {
+  background: none;
+}

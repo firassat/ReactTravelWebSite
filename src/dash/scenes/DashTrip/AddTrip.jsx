@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -6,22 +6,33 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
+import GetCity from "../../components/getCity";
+import InputDaysTrip from "../../components/InputDaysTrip";
 
 const AddTrip = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
   const [send, setsend] = useState(0);
+  const [city, setCity] = useState(0);
+  const [days_number, setdays_number] = useState(1);
+  const [days_data, setdaysfata] = useState({});
+  const [days_input, setdays_input] = useState(0);
   const navigate = useNavigate();
   const token = localStorage.getItem("_auth");
+  const location = useLocation();
+  const id = location.state.id;
 
   const handleFormSubmit = async (values) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/attraction/addAttractionCompany",
+        "http://127.0.0.1:8000/api/trip/addNewTrip",
         {
           ...values,
+          trip_company_id: id,
+          destination: city,
+          ...days_data,
         },
         {
           headers: {
@@ -33,9 +44,8 @@ const AddTrip = () => {
       if (response.status === 200) {
         setsend(1);
         setTimeout(() => {
-          navigate("/dashAttraction");
+          navigate("/dashTrip");
         }, 5000);
-        console.log(response);
       } else {
         throw await response;
       }
@@ -43,11 +53,25 @@ const AddTrip = () => {
       seterr(error);
     }
   };
+  const onSubmitDays = (e) => {
+    e.preventDefault();
+    for (let i = 1; i <= days_number; i++) {
+      days_data[`title_${i}`] = e.target[i - 1].value;
+      days_data[`details_${i}`] = e.target[i - 1].value;
+    }
+    setdays_input(0);
+  };
+  useEffect(() => {
+    setdays_input(days_number);
+  }, [days_number]);
 
   return (
     <Box m="40px auto" width="70%">
       <Header title="Add Attraction" />
       <BackButtom />
+      {days_input ? (
+        <InputDaysTrip days_number={days_number} onSubmitDays={onSubmitDays} />
+      ) : null}
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -70,55 +94,18 @@ const AddTrip = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
+              <GetCity setCity={setCity} />
+              {setdays_number(values.days_number)}
               <TextField
                 variant="filled"
                 type="text"
-                label="Name"
+                label="description"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.name}
-                name="name"
-                error={!!touched.name && !!errors.name}
-                helperText={touched.name && errors.name}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="location"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.location}
-                name="location"
-                error={!!touched.location && !!errors.location}
-                helperText={touched.location && errors.location}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="website_url"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.website_url}
-                name="website_url"
-                error={!!touched.website_url && !!errors.website_url}
-                helperText={touched.website_url && errors.website_url}
+                value={values.description}
+                name="description"
+                error={!!touched.description && !!errors.description}
+                helperText={touched.description && errors.description}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -134,158 +121,68 @@ const AddTrip = () => {
                 helperText={touched.details && errors.details}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
-                type="phone"
-                label="Phone Number"
+                type="number"
+                label="start_age"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.phone_number}
-                name="phone_number"
-                error={!!touched.phone_number && !!errors.phone_number}
-                helperText={touched.phone_number && errors.phone_number}
+                value={values.start_age}
+                name="start_age"
+                error={!!touched.start_age && !!errors.start_age}
+                helperText={touched.start_age && errors.start_age}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="number"
-                label="adult_ability_per_day"
+                label="end_age"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.adult_ability_per_day}
-                name="adult_ability_per_day"
-                error={
-                  !!touched.adult_ability_per_day &&
-                  !!errors.adult_ability_per_day
-                }
-                helperText={
-                  touched.adult_ability_per_day && errors.adult_ability_per_day
-                }
+                value={values.end_age}
+                name="end_age"
+                error={!!touched.end_age && !!errors.end_age}
+                helperText={touched.end_age && errors.end_age}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="number"
-                label="adult_price"
+                label="max_persons"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.adult_price}
-                name="adult_price"
-                error={!!touched.adult_price && !!errors.adult_price}
-                helperText={touched.adult_price && errors.adult_price}
+                value={values.max_persons}
+                name="max_persons"
+                error={!!touched.max_persons && !!errors.max_persons}
+                helperText={touched.max_persons && errors.max_persons}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="number"
-                label="available_days"
+                label="days_number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.available_days}
-                name="available_days"
-                error={!!touched.available_days && !!errors.available_days}
-                helperText={touched.available_days && errors.available_days}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="child_ability_per_day"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.child_ability_per_day}
-                name="child_ability_per_day"
-                error={
-                  !!touched.child_ability_per_day &&
-                  !!errors.child_ability_per_day
-                }
-                helperText={
-                  touched.child_ability_per_day && errors.child_ability_per_day
-                }
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="child_price"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.child_price}
-                name="child_price"
-                error={!!touched.child_price && !!errors.child_price}
-                helperText={touched.child_price && errors.child_price}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="city_id"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.city_id}
-                name="city_id"
-                error={!!touched.city_id && !!errors.city_id}
-                helperText={touched.city_id && errors.city_id}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="attraction_type_id"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.attraction_type_id}
-                name="attraction_type_id"
-                error={
-                  !!touched.attraction_type_id && !!errors.attraction_type_id
-                }
-                helperText={
-                  touched.attraction_type_id && errors.attraction_type_id
-                }
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="datetime-local"
-                label="open_at"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.open_at}
-                name="open_at"
-                error={!!touched.open_at && !!errors.open_at}
-                helperText={touched.open_at && errors.open_at}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="datetime-local"
-                label="close_at"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.close_at}
-                name="close_at"
-                error={!!touched.close_at && !!errors.close_at}
-                helperText={touched.close_at && errors.close_at}
+                value={values.days_number}
+                name="days_number"
+                error={!!touched.days_number && !!errors.days_number}
+                helperText={touched.days_number && errors.days_number}
                 sx={{ gridColumn: "span 2" }}
               />
             </Box>
+
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
                 Add
               </Button>
               {send ? (
-                <Box className="sentSuccss">
-                  <h2>Updates sent successfully, pending approval.</h2>
+                <Box className="sentSuccss" textAlign={"center"}>
+                  <h2> Added successfully</h2>
                 </Box>
               ) : (
                 ""

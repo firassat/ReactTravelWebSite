@@ -18,5 +18,6 @@ export { default as AddAttraction } from "./DashAttraction/AddAttraction.jsx";
 export { default as ShowTrip } from "./DashTrip/ShowTrip";
 export { default as EditTrip } from "./DashTrip/EditTrip";
 export { default as AddTrip } from "./DashTrip/AddTrip";
+export { default as TripDetails } from "./DashTrip/TripDetails";
 export { default as Nav } from "./Nav";
 export { default as AddCity } from "./AddCity";

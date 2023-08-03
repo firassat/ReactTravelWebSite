@@ -8,18 +8,17 @@ import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 
-export default function GetCity() {
+export default function GetCity(props) {
   const [cuntry, setcuntry] = useState("");
   const [repositories, setRepositories] = useState([]);
   const [cityid, setcityid] = useState(1);
   const [cityData, setcityData] = useState([]);
-
+  props.setCity(cityid);
   const handleChange = (event) => {
     setcuntry(event.target.value);
   };
   const handleChangeCity = (event) => {
     setcityid(event.target.value);
-    console.log(cityid);
   };
 
   async function getCuntry() {
@@ -42,7 +41,7 @@ export default function GetCity() {
       .then((response) => setcityData(response.cities));
   }
   useEffect(() => {
-    getCity();
+    cuntry && getCity();
   }, [cuntry]);
 
   return (
@@ -50,19 +49,27 @@ export default function GetCity() {
       // sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}
     >
       <FormControl sx={{ gridColumn: "span 2" }}>
-        <InputLabel id="Country">Country</InputLabel>
-        <Select value={cuntry} label="Cuntry" onChange={handleChange}>
+        <InputLabel id="country_id">Country</InputLabel>
+        <Select
+          value={cuntry ? cuntry : ""}
+          label="Cuntry"
+          onChange={handleChange}
+        >
           {repositories.map((e) => {
-            return <MenuItem value={e.id}>{e.name}</MenuItem>;
+            return <MenuItem value={`${e.id}`}>{e.name}</MenuItem>;
           })}
         </Select>
       </FormControl>
       <FormControl sx={{ gridColumn: "span 2" }}>
         <InputLabel id="City">City</InputLabel>
-        <Select value={cityid} label="City" onChange={handleChangeCity}>
+        <Select
+          value={cityid ? cityid : ""}
+          label="City"
+          onChange={handleChangeCity}
+        >
           {cityData
             ? cityData.map((e) => {
-                return <MenuItem value={e.id}>{e.name}</MenuItem>;
+                return <MenuItem value={`${e.id}`}>{e.name}</MenuItem>;
               })
             : null}
         </Select>

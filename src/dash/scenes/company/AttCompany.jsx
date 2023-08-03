@@ -9,7 +9,7 @@ function AttCompany() {
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "id", headerName: "ID", flex: 1 },
     {
       field: "name",
       headerName: "Name",
@@ -35,11 +35,6 @@ function AttCompany() {
       field: "rate",
       headerName: "Rate",
       flex: 0.5,
-    },
-    {
-      field: "details",
-      headerName: "Details",
-      flex: 1,
     },
     {
       field: "More",

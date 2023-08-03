@@ -35,7 +35,7 @@ const Topbar = (props) => {
   useEffect(() => {
     getNav();
   }, [nav]);
-  console.log(repositories);
+
   const navHandl = () => {
     setnav((priv) => !priv);
   };
@@ -141,7 +141,7 @@ const Topbar = (props) => {
                       </Box>
                       {}
                       <Box color={colors.grey[100]} px={"15px"}>
-                        <Typography>{e.admin.user_name}</Typography>
+                        <Typography>{e.admin.full_name}</Typography>
                         <Typography fontSize={"10px"}>
                           {getDate(e.created_at)}
                         </Typography>

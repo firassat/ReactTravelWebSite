@@ -38,6 +38,7 @@ import {
   ShowTrip,
   EditTrip,
   AddTrip,
+  TripDetails,
   Nav,
   AddCity,
 } from "./dash/scenes/index.js";
@@ -153,6 +154,10 @@ const App = () => {
                               />
                               <Route path="/showTrip" element={<ShowTrip />} />
                               <Route path="/editTrip" element={<EditTrip />} />
+                              <Route
+                                path="/tripDetails"
+                                element={<TripDetails />}
+                              />
                               <Route path="/nav" element={<Nav />} />
                             </Routes>
                           </Box>
@@ -199,6 +204,7 @@ const App = () => {
               </ProtectedRouteAttAdmin>
             }
           ></Route>
+          {/* TripDashboard */}
           <Route
             exact
             path="dashTrip/*"
@@ -217,6 +223,10 @@ const App = () => {
                               <Route path="" element={<ShowTrip />} />
                               <Route path="/addTrip" element={<AddTrip />} />
                               <Route path="/editTrip" element={<EditTrip />} />
+                              <Route
+                                path="/tripDetails"
+                                element={<TripDetails />}
+                              />
                             </Routes>
                           </Box>
                         </main>

@@ -11,13 +11,16 @@ function ShowTrip() {
   const location = useLocation();
   let [data, setdata] = useState([]);
   let [trip, setTrip] = useState([]);
+
   const [pageOffset, setPageOffset] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [id, setid] = useState(0);
   const navigate = useNavigate();
 
+  let mainAdmin = localStorage.getItem("_auth_type") === "main_admin" ? 1 : 0;
+
   async function getUsers() {
-    if (location.state) {
+    if (mainAdmin) {
       const id = location.state.id;
       await axios
         .get("http://127.0.0.1:8000/api/admin/getTripCompanyDetails?id=" + id)
@@ -48,19 +51,35 @@ function ShowTrip() {
   }, []);
 
   async function getTrip() {
-    await axios
-      .get(
-        "http://127.0.0.1:8000/api/admin/getTripsForCompany?page=" +
-          pageOffset +
-          "&&id=" +
-          id
-      )
-      .then((response) => response.data)
-      .then((data) => data.data)
-      .then((data) => {
-        data && setTrip(data.data);
-        data && setPageCount(data.last_page);
-      });
+    if (mainAdmin) {
+      await axios
+        .get(
+          "http://127.0.0.1:8000/api/admin/getTripsForCompany?page=" +
+            pageOffset +
+            "&&id=" +
+            id
+        )
+        .then((response) => response.data)
+        .then((data) => data.data)
+        .then((data) => {
+          data && setTrip(data.data);
+          data && setPageCount(data.last_page);
+        });
+    } else {
+      await axios
+        .get("http://127.0.0.1:8000/api/trip/getAllTrips?page=" + pageOffset, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("_auth")}`,
+          },
+        })
+        .then((response) => response.data)
+        .then((data) => data.data)
+        .then((data) => {
+          data && setTrip(data.data);
+          data && setPageCount(data.last_page);
+        });
+    }
   }
 
   useEffect(() => {
@@ -104,15 +123,9 @@ function ShowTrip() {
             <li>
               <h6>Name </h6> <h6>{data.name}</h6>
             </li>
-            {/* <li>
-              <h6>City </h6> <h6>{data.city.name}</h6>
-            </li> */}
             <li>
               <h6>Email </h6> <h6>{data.email}</h6>
             </li>
-            {/* <li>
-              <h6>Location </h6> <h6>{data.location}</h6>
-            </li> */}
             <li>
               <h6>Phone Number </h6> <h6>{data.phone_number}</h6>
             </li>
@@ -160,7 +173,11 @@ function ShowTrip() {
                     </Box>
                     {trip.map((e, i) => (
                       <Link
-                        to={`/dash/tripDetails`}
+                        to={
+                          mainAdmin
+                            ? `/dash/tripDetails`
+                            : `/dashTrip/tripDetails`
+                        }
                         state={{ trip: e }}
                         key={`${e.id}-${i}`}
                       >
@@ -232,7 +249,7 @@ function ShowTrip() {
             className="deletebutoomShow edit"
             backgroundColor="#9E9E9E"
             onClick={async () => {
-              if (location.state)
+              if (mainAdmin)
                 navigate("/dash/editTrip", {
                   state: data,
                 });
@@ -244,6 +261,19 @@ function ShowTrip() {
           >
             Edit
           </Box>
+          {!mainAdmin ? (
+            <Box
+              className="deletebutoomShow edit"
+              backgroundColor="#9E9E9E"
+              onClick={async () => {
+                navigate("/dashTrip/addTrip", {
+                  state: data,
+                });
+              }}
+            >
+              Add Trip
+            </Box>
+          ) : null}
         </Box>
       </Box>
     )

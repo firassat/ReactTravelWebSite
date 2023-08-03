@@ -14,6 +14,7 @@ const EditTrip = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
   const [send, setsend] = useState(0);
+
   const location = useLocation();
   const data = location.state;
   const navigate = useNavigate();
@@ -22,24 +23,7 @@ const EditTrip = () => {
     name: data.name,
     email: data.email,
     phone_number: data.phone_number,
-    details: data.details,
-    adult_ability_per_day: data.adult_ability_per_day,
-    adult_price: data.adult_price,
-    // available_days: data.available_days,
-    child_ability_per_day: data.child_ability_per_day,
-    child_price: data.child_price,
-    close_at: data.close_at,
-    location: data.location,
-    // num_of_ratings: data.num_of_ratings,
-    open_at: data.open_at,
-    website_url: data.website_url,
-    Saturday: data.Saturday,
-    Sunday: data.Sunday,
-    Monday: data.Monday,
-    Tuesday: data.Tuesday,
-    Wednesday: data.Wednesday,
-    Thursday: data.Thursday,
-    Friday: data.Friday,
+    country_id: data.country_id,
   };
 
   const handleFormSubmit = async (values) => {
@@ -58,7 +42,7 @@ const EditTrip = () => {
         );
 
         if (response.status === 200) {
-          navigate("/dash/attractionShow", { state: { id: data.id } });
+          navigate("/dash/showTrip", { state: { id: data.id } });
         } else {
           throw await response;
         }
@@ -90,10 +74,9 @@ const EditTrip = () => {
       seterr(error);
     }
   };
-
   return (
     <Box m="40px auto" width="70%">
-      <Header title="Edit Attraction" />
+      <Header title="Edit Trip Company" />
       <BackButtom />
 
       <Formik
@@ -144,33 +127,8 @@ const EditTrip = () => {
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="location"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.location}
-                name="location"
-                error={!!touched.location && !!errors.location}
-                helperText={touched.location && errors.location}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="website_url"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.website_url}
-                name="website_url"
-                error={!!touched.website_url && !!errors.website_url}
-                helperText={touched.website_url && errors.website_url}
-                sx={{ gridColumn: "span 2" }}
-              />
-              {/* <TextField
                 fullWidth
                 variant="filled"
                 type="phone"
@@ -183,7 +141,7 @@ const EditTrip = () => {
                 helperText={touched.phone_number && errors.phone_number}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
+              {/*  <TextField
                 fullWidth
                 variant="filled"
                 type="number"

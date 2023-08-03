@@ -8,6 +8,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
+import AvailableDays from "../../components/AvailableDays";
 
 const EditAttraction = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -16,6 +17,7 @@ const EditAttraction = () => {
   const location = useLocation();
   const data = location.state;
   const navigate = useNavigate();
+  const [checked, setChecked] = useState(0);
 
   const initialValues = {
     name: data.name,
@@ -24,15 +26,31 @@ const EditAttraction = () => {
     // details: data.details,
     // adult_ability_per_day: data.adult_ability_per_day,
     // adult_price: data.adult_price,
-    // available_days: data.available_days,
+    // // available_days: data.available_days,
     // child_ability_per_day: data.child_ability_per_day,
     // child_price: data.child_price,
     // close_at: data.close_at,
     // location: data.location,
-    // num_of_ratings: data.num_of_ratings,
+    // // num_of_ratings: data.num_of_ratings,
     // open_at: data.open_at,
     // website_url: data.website_url,
+    // Saturday: data.Saturday,
+    // Sunday: data.Sunday,
+    // Monday: data.Monday,
+    // Tuesday: data.Tuesday,
+    // Wednesday: data.Wednesday,
+    // Thursday: data.Thursday,
+    // Friday: data.Friday,
+    // city_id: data.city_id,
   };
+  const days = [];
+  days["Saturday"] = checked[0];
+  days["Sunday"] = checked[1];
+  days["Monday"] = checked[2];
+  days["Tuesday"] = checked[3];
+  days["Wednesday"] = checked[4];
+  days["Thursday"] = checked[5];
+  days["Friday"] = checked[6];
 
   const handleFormSubmit = async (values) => {
     try {
@@ -46,11 +64,12 @@ const EditAttraction = () => {
             },
             ...values,
             id: data.id,
+            ...days,
           }
         );
-
+        console.log(data);
         if (response.status === 200) {
-          navigate("/dash/attractionShow", { state: { id: data.id } });
+          navigate("/dash/showAttraction", { state: { id: data.id } });
         } else {
           throw await response;
         }
@@ -80,6 +99,7 @@ const EditAttraction = () => {
       }
     } catch (error) {
       seterr(error);
+      console.log(error);
     }
   };
 
@@ -87,6 +107,7 @@ const EditAttraction = () => {
     <Box m="40px auto" width="70%">
       <Header title="Edit Attraction" />
       <BackButtom />
+      <AvailableDays setChecked={setChecked} />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
