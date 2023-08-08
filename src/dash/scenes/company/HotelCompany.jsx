@@ -2,40 +2,39 @@ import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import UserGrid from "../../components/grid/UserGrid";
-
+import { Link } from "react-router-dom";
 const HotelCompany = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   const columns = [
-    { field: "id", headerName: "ID" },
+    { field: "id", headerName: "ID", flex: 1 },
     {
-      field: "first_name",
-      headerName: "first_name",
+      field: "name",
+      headerName: "Name",
       flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "last_name",
-      headerName: "last_name",
-      flex: 1,
-      type: "number",
-      headerAlign: "left",
-      align: "left",
+      // align: "center",
     },
     {
       field: "email",
-      headerName: "email",
+      headerName: "Email",
       flex: 1,
     },
     {
       field: "phone_number",
-      headerName: "phone_number",
+      headerName: "Phone_number",
       flex: 1,
     },
     {
-      field: "Delete",
-      headerName: "Delete",
+      field: "location",
+      headerName: "location",
       flex: 1,
+    },
+    {
+      field: "More",
+      headerName: "More",
+      flex: 1,
+      headerAlign: "center",
       renderCell: ({ row: { id } }) => {
         return (
           <Box
@@ -44,14 +43,18 @@ const HotelCompany = () => {
             justifyContent="center"
             style={{ cursor: "pointer" }}
             p="0 10px"
-            color="white"
+            color="black"
             borderRadius="4px"
-            backgroundColor="#f44336"
-            onClick={() => {
-              console.log(id);
+            backgroundColor="#9e9e9e"
+            sx={{
+              "& a ": {
+                color: "black",
+              },
             }}
           >
-            Delete
+            <Link to={"/dash/showHotel"} state={{ id: id }}>
+              Show More
+            </Link>
           </Box>
         );
       },
@@ -69,16 +72,13 @@ const HotelCompany = () => {
           borderBottom: "none !important",
         },
         position: "absolute",
-        top: "15%",
-        padding: "20px",
+        top: "20%",
+        padding: "20px 50px",
         width: "100%",
       }}
     >
-      <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-        Hotels
-      </Typography>
       <UserGrid
-        url="http://127.0.0.1:8000/api/admin/getAllUsers"
+        url="http://127.0.0.1:8000/api/admin/AllHotels"
         columns={columns}
       />
     </Box>

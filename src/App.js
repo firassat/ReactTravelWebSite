@@ -41,6 +41,7 @@ import {
   EditTrip,
   AddTrip,
   AddTripCompany,
+  ShowHotel,
   ReservationsTrip,
   TripDetails,
   Nav,
@@ -70,6 +71,12 @@ const App = () => {
   };
   const ProtectedRouteTripAdmin = ({ children }) => {
     if (localStorage.getItem("_auth_type") !== "trip_admin") {
+      return <Navigate to="/dash/login" />;
+    }
+    return children;
+  };
+  const ProtectedRouteHotelAdmin = ({ children }) => {
+    if (localStorage.getItem("_auth_type") !== "hotel_admin") {
       return <Navigate to="/dash/login" />;
     }
     return children;
@@ -162,6 +169,10 @@ const App = () => {
                                 path="/tripDetails"
                                 element={<TripDetails />}
                               />
+                              <Route
+                                path="/showHotel"
+                                element={<ShowHotel />}
+                              />
                               <Route path="/nav" element={<Nav />} />
                             </Routes>
                           </Box>
@@ -247,6 +258,47 @@ const App = () => {
                   </ColorModeContext.Provider>
                 </RequireAuth>
               </ProtectedRouteTripAdmin>
+            }
+          ></Route>
+          {/* HotelDashboard */}
+          <Route
+            exact
+            path="dashHotel/*"
+            element={
+              <ProtectedRouteHotelAdmin>
+                <RequireAuth loginPath={"/dash/login"}>
+                  <ColorModeContext.Provider value={colorMode}>
+                    <ThemeProvider theme={theme}>
+                      <CssBaseline />
+                      <div className="app">
+                        <TopbarSec setIsSidebar={setIsSidebar} />
+                        <main className="content" style={{ display: "flex" }}>
+                          {isSidebar && <SidebarTrip isSidebar={isSidebar} />}
+                          <Box flexGrow={1}>
+                            <Routes>
+                              <Route path="" element={<ShowHotel />} />
+                              <Route path="/addHotel" element={<AddTrip />} />
+                              <Route
+                                path="/addTripCompany"
+                                element={<AddTripCompany />}
+                              />
+                              <Route
+                                path="/reservationsTrip"
+                                element={<ReservationsTrip />}
+                              />
+                              <Route path="/editTrip" element={<EditTrip />} />
+                              <Route
+                                path="/tripDetails"
+                                element={<TripDetails />}
+                              />
+                            </Routes>
+                          </Box>
+                        </main>
+                      </div>
+                    </ThemeProvider>
+                  </ColorModeContext.Provider>
+                </RequireAuth>
+              </ProtectedRouteHotelAdmin>
             }
           ></Route>
         </Routes>

@@ -52,6 +52,11 @@ const Login2 = () => {
             navigate("/dashTrip");
           }, 1000);
         }
+        if (response.data.admin.admin_type === "hotel_admin") {
+          setTimeout(() => {
+            navigate("/dashHotel");
+          }, 1000);
+        }
       } else {
         //Throw error
       }
