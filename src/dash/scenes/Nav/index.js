@@ -14,9 +14,13 @@ function Nav() {
   let url, url2;
   if (repo.type === "attraction_company")
     url = "http://127.0.0.1:8000/api/admin/getUpdatingDetails?id=";
-  else if (repo.type === "trip_company")
+  else if (repo.type === "trip_company") {
     url = "http://127.0.0.1:8000/api/admin/getTripUpdatingDetails?id=";
-  url2 = "http://127.0.0.1:8000/api/admin/acceptTripCompanyUpdate";
+    url2 = "http://127.0.0.1:8000/api/admin/acceptTripCompanyUpdate";
+  } else if (repo.type === "hotel_company") {
+    url = "http://127.0.0.1:8000/api/admin/getHotelUpdatingDetails?id=";
+    url2 = "http://127.0.0.1:8000/api/admin/acceptUpdate";
+  }
 
   async function getUsers() {
     await axios
@@ -29,7 +33,7 @@ function Nav() {
   useEffect(() => {
     getUsers();
   }, [repo]);
-
+  console.log(repo.id);
   const handleSubmit = async (accept, rejecte) => {
     try {
       const response = await axios.post(
@@ -55,27 +59,31 @@ function Nav() {
       console.log(error);
     }
   };
-  if (data.add_or_update) {
-    const getTrip = async () => {
-      await axios
-        .get(
-          "http://127.0.0.1:8000/api/admin/getTripCompanyDetails?id=" +
-            data.trip_company_id
-        )
-        .then((response) => response.data)
-        .then((data) => data.data)
-        .then((data) => {
-          setOldCompany(data);
-          console.log(data);
-        });
-    };
-  }
+  // if (data.add_or_update) {
+  //   const getTrip = async () => {
+  //     await axios
+  //       .get(
+  //         "http://127.0.0.1:8000/api/admin/getTripCompanyDetails?id=" +
+  //           data.trip_company_id
+  //       )
+  //       .then((response) => response.data)
+  //       .then((data) => data.data)
+  //       .then((data) => {
+  //         setOldCompany(data);
+  //         console.log(data);
+  //       });
+  //   };
+  // }
   return (
     data.admin && (
       <Box>
         <div className="dashboardshow">
           <h5 style={{ margin: "5px auto", padding: "20px" }}>
-            {`the admin "${data.admin.full_name}" requests
+            {`the admin "${
+              data.admin.full_name
+                ? data.admin.full_name
+                : data.admin.first_name
+            }" requests
                 ${
                   data.add_or_update ? "update" : "add"
                 } his company's information`}

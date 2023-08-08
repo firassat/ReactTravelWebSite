@@ -24,5 +24,6 @@ export { default as AddTripCompany } from "./DashTrip/AddTripCompany";
 export { default as ReservationsTrip } from "./DashTrip/ReservationsTrip";
 export { default as TripDetails } from "./DashTrip/TripDetails";
 export { default as ShowHotel } from "./DashHotel/ShowHotel";
+export { default as AddHotel } from "./DashHotel/AddHotel";
 export { default as Nav } from "./Nav";
 export { default as AddCity } from "./AddCity";

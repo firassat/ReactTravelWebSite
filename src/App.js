@@ -42,6 +42,7 @@ import {
   AddTrip,
   AddTripCompany,
   ShowHotel,
+  AddHotel,
   ReservationsTrip,
   TripDetails,
   Nav,
@@ -173,6 +174,7 @@ const App = () => {
                                 path="/showHotel"
                                 element={<ShowHotel />}
                               />
+                              <Route path="/addHotel" element={<AddHotel />} />
                               <Route path="/nav" element={<Nav />} />
                             </Routes>
                           </Box>
@@ -277,7 +279,7 @@ const App = () => {
                           <Box flexGrow={1}>
                             <Routes>
                               <Route path="" element={<ShowHotel />} />
-                              <Route path="/addHotel" element={<AddTrip />} />
+                              <Route path="/addHotel" element={<AddHotel />} />
                               <Route
                                 path="/addTripCompany"
                                 element={<AddTripCompany />}

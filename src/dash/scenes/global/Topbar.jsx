@@ -30,6 +30,7 @@ const Topbar = (props) => {
       .get("http://127.0.0.1:8000/api/admin/getUpdatesList")
       .then((response) => {
         setRepositories(response.data);
+        console.log(response);
       });
   }
   useEffect(() => {
@@ -141,7 +142,11 @@ const Topbar = (props) => {
                       </Box>
                       {}
                       <Box color={colors.grey[100]} px={"15px"}>
-                        <Typography>{e.admin.full_name}</Typography>
+                        <Typography>
+                          {e.admin.full_name
+                            ? e.admin.full_name
+                            : e.admin.first_name}
+                        </Typography>
                         <Typography fontSize={"10px"}>
                           {getDate(e.created_at)}
                         </Typography>

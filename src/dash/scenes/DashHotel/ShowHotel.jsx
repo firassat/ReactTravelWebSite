@@ -44,7 +44,6 @@ function ShowHotel() {
         .then((response) => response.data)
         .then((data) => {
           setdata(data);
-          setid(data.id);
         });
     } else {
       await axios
@@ -67,7 +66,7 @@ function ShowHotel() {
   useEffect(() => {
     getUsers();
   }, []);
-
+  console.log(data);
   // const deleteInput = (url, id) => {
   //   const response = axios.get(url + id, {
   //     headers: {
@@ -105,6 +104,34 @@ function ShowHotel() {
   //     </Box>
   //   );
   // }
+
+  if (!data.Hotel_info) {
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%,-50%)",
+          textAlign: "center",
+        }}
+      >
+        <h3>"You should register your hotel before doing this operation!"</h3>
+        <Box
+          className="deletebutoomShow edit"
+          backgroundColor="#9E9E9E"
+          margin="20px auto"
+          onClick={async () => {
+            navigate("/dashHotel/addHotel", {
+              state: data.data,
+            });
+          }}
+        >
+          Add
+        </Box>
+      </Box>
+    );
+  }
   return (
     data.Hotel_info && (
       <Box>
