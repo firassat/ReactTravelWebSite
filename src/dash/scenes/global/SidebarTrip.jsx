@@ -29,7 +29,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar3 = () => {
+const SidebarTrip = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -113,30 +113,8 @@ const Sidebar3 = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="HOME"
-              to="/dash"
+              to="/dashTrip"
               icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Item
-              title="Admins and Users"
-              to="/dash/team"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Contacts Info"
-              to="/dash/contacts"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Finances"
-              to="/dash/invoices"
-              icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
@@ -147,4 +125,4 @@ const Sidebar3 = () => {
   );
 };
 
-export default Sidebar3;
+export default SidebarTrip;

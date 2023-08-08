@@ -1,10 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import { Box, Pagination, Typography, useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../../theme";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Box,
+  IconButton,
+  Pagination,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { tokens } from "../../../theme";
+
 function ShowTrip() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -16,9 +22,9 @@ function ShowTrip() {
   const [pageCount, setPageCount] = useState(0);
   const [id, setid] = useState(0);
   const navigate = useNavigate();
-
+  let [reload, setReload] = useState([]);
   let mainAdmin = localStorage.getItem("_auth_type") === "main_admin" ? 1 : 0;
-
+  let token = localStorage.getItem("_auth");
   async function getUsers() {
     if (mainAdmin) {
       const id = location.state.id;
@@ -35,7 +41,7 @@ function ShowTrip() {
         .get("http://127.0.0.1:8000/api/trip/getTripCompanyDetails", {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("_auth")}`,
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => response.data)
@@ -70,7 +76,7 @@ function ShowTrip() {
         .get("http://127.0.0.1:8000/api/trip/getAllTrips?page=" + pageOffset, {
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("_auth")}`,
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => response.data)
@@ -84,10 +90,20 @@ function ShowTrip() {
 
   useEffect(() => {
     getTrip();
-  }, [pageOffset, id]);
+  }, [pageOffset, id, reload]);
 
   const handlePageChange = (event, page) => {
     setPageOffset(page);
+  };
+
+  const deleteInput = (url, id) => {
+    const response = axios.get(url + id, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setReload((priv) => priv + 1);
   };
 
   if (!data) {
@@ -98,19 +114,21 @@ function ShowTrip() {
           top: "50%",
           left: "50%",
           transform: "translate(-50%,-50%)",
+          textAlign: "center",
         }}
       >
-        <h3>No Information Your Company</h3>
+        <h3>"You should register your company before doing this operation!"</h3>
         <Box
           className="deletebutoomShow edit"
           backgroundColor="#9E9E9E"
+          margin="20px auto"
           onClick={async () => {
-            navigate("/dashTrip/addTrip", {
+            navigate("/dashTrip/addTripCompany", {
               state: data,
             });
           }}
         >
-          Add Trip
+          Add
         </Box>
       </Box>
     );
@@ -172,46 +190,78 @@ function ShowTrip() {
                       </Box>
                     </Box>
                     {trip.map((e, i) => (
-                      <Link
-                        to={
-                          mainAdmin
-                            ? `/dash/tripDetails`
-                            : `/dashTrip/tripDetails`
-                        }
-                        state={{ trip: e }}
-                        key={`${e.id}-${i}`}
-                      >
-                        <Box
-                          display="grid"
-                          gridTemplateColumns="repeat(7, 10%)"
-                          borderBottom={`1px solid ${colors.primary[800]}`}
-                          p="10px "
-                          gap="20px"
+                      <Box position={"relative"}>
+                        <Link
+                          to={
+                            mainAdmin
+                              ? `/dash/tripDetails`
+                              : `/dashTrip/tripDetails`
+                          }
+                          state={{ trip: e }}
+                          key={`${e.id}-${i}`}
                         >
-                          <Box color={colors.greenAccent[500]}>
-                            <Typography>{e.id}</Typography>
+                          <Box
+                            display="grid"
+                            gridTemplateColumns="repeat(7, 10%)"
+                            borderBottom={`1px solid ${colors.primary[800]}`}
+                            p="10px "
+                            gap="20px"
+                          >
+                            <Box color={colors.greenAccent[500]}>
+                              <Typography>{e.id}</Typography>
+                            </Box>
+                            {}
+                            <Box color={colors.grey[100]}>
+                              <Typography>{e.description}</Typography>
+                            </Box>
+                            <Box color={colors.grey[100]}>
+                              <Typography>{e.start_age}</Typography>
+                            </Box>
+                            <Box color={colors.grey[100]}>
+                              <Typography>{e.end_age}</Typography>
+                            </Box>
+                            <Box color={colors.grey[100]}>
+                              <Typography>{e.max_persons}</Typography>
+                            </Box>
+                            <Box color={colors.grey[100]}>
+                              <Typography>{e.rate}</Typography>
+                            </Box>
+                            <Box color={colors.grey[100]}>
+                              <Typography>{e.days_number}</Typography>
+                            </Box>
                           </Box>
-                          {}
-                          <Box color={colors.grey[100]}>
-                            <Typography>{e.description}</Typography>
-                          </Box>
-                          <Box color={colors.grey[100]}>
-                            <Typography>{e.start_age}</Typography>
-                          </Box>
-                          <Box color={colors.grey[100]}>
-                            <Typography>{e.end_age}</Typography>
-                          </Box>
-                          <Box color={colors.grey[100]}>
-                            <Typography>{e.max_persons}</Typography>
-                          </Box>
-                          <Box color={colors.grey[100]}>
-                            <Typography>{e.rate}</Typography>
-                          </Box>
-                          <Box color={colors.grey[100]}>
-                            <Typography>{e.days_number}</Typography>
-                          </Box>
+                        </Link>
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            bottom: "calc(50% - 1rem)",
+                            left: "-120px",
+                            color: "brown",
+                            zIndex: "10",
+                          }}
+                        >
+                          <IconButton
+                            onClick={() => {
+                              deleteInput(
+                                "http://127.0.0.1:8000/api/trip/deleteSomeTrip?trip_id=",
+                                e.id
+                              );
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton
+                            style={{ fontSize: "10px" }}
+                            onClick={() => {
+                              navigate("/dashTrip/reservationsTrip", {
+                                state: { id: e.id },
+                              });
+                            }}
+                          >
+                            Reservations
+                          </IconButton>
                         </Box>
-                      </Link>
+                      </Box>
                     ))}
                     <Pagination
                       count={pageCount}

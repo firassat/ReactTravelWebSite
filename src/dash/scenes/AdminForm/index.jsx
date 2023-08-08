@@ -67,6 +67,19 @@ const AdminForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
+                label="Name"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.full_name}
+                name="full_name"
+                error={!!touched.full_name && !!errors.full_name}
+                helperText={touched.full_name && errors.full_name}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
                 label="UserName"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -80,11 +93,24 @@ const AdminForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
+                type="phone"
+                label="phone_number"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.phone_number}
+                name="phone_number"
+                error={!!touched.phone_number && !!errors.phone_number}
+                helperText={touched.phone_number && errors.phone_number}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
                 type="password"
                 label="password"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
+                value={values.password}
                 name="password"
                 error={!!touched.password && !!errors.password}
                 helperText={touched.password && errors.password}

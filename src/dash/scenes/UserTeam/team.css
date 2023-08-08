@@ -66,3 +66,10 @@
 .inputDays input::placeholder {
   background: none;
 }
+.formInputAdd {
+  justify-content: center;
+}
+.formInputAdd input {
+  margin: 10px auto;
+  padding: 10px;
+}

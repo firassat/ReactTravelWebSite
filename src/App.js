@@ -23,9 +23,11 @@ import {
   UserTeam,
   AdminTeam,
   Topbar,
+  TopbarSec,
   Dashboard,
-  Sidebar2,
-  Sidebar3,
+  SidebarMain,
+  SidebarAtt,
+  SidebarTrip,
   UserForm,
   AdminForm,
   EditForm,
@@ -38,6 +40,8 @@ import {
   ShowTrip,
   EditTrip,
   AddTrip,
+  AddTripCompany,
+  ReservationsTrip,
   TripDetails,
   Nav,
   AddCity,
@@ -126,7 +130,7 @@ const App = () => {
                       <div className="app">
                         <Topbar setIsSidebar={setIsSidebar} />
                         <main className="content" style={{ display: "flex" }}>
-                          {isSidebar && <Sidebar2 isSidebar={isSidebar} />}
+                          {isSidebar && <SidebarMain isSidebar={isSidebar} />}
                           <Box flexGrow={1}>
                             <Routes>
                               <Route path="" element={<Dashboard />} />
@@ -180,9 +184,9 @@ const App = () => {
                     <ThemeProvider theme={theme}>
                       <CssBaseline />
                       <div className="app">
-                        <Topbar setIsSidebar={setIsSidebar} />
+                        <TopbarSec setIsSidebar={setIsSidebar} />
                         <main className="content" style={{ display: "flex" }}>
-                          {isSidebar && <Sidebar3 isSidebar={isSidebar} />}
+                          {isSidebar && <SidebarAtt isSidebar={isSidebar} />}
                           <Box flexGrow={1}>
                             <Routes>
                               <Route path="" element={<ShowAttraction />} />
@@ -215,13 +219,21 @@ const App = () => {
                     <ThemeProvider theme={theme}>
                       <CssBaseline />
                       <div className="app">
-                        <Topbar setIsSidebar={setIsSidebar} />
+                        <TopbarSec setIsSidebar={setIsSidebar} />
                         <main className="content" style={{ display: "flex" }}>
-                          {isSidebar && <Sidebar3 isSidebar={isSidebar} />}
+                          {isSidebar && <SidebarTrip isSidebar={isSidebar} />}
                           <Box flexGrow={1}>
                             <Routes>
                               <Route path="" element={<ShowTrip />} />
                               <Route path="/addTrip" element={<AddTrip />} />
+                              <Route
+                                path="/addTripCompany"
+                                element={<AddTripCompany />}
+                              />
+                              <Route
+                                path="/reservationsTrip"
+                                element={<ReservationsTrip />}
+                              />
                               <Route path="/editTrip" element={<EditTrip />} />
                               <Route
                                 path="/tripDetails"

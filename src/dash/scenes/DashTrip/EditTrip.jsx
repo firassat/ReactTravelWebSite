@@ -14,7 +14,8 @@ const EditTrip = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
   const [send, setsend] = useState(0);
-
+  const [city, setCity] = useState(0);
+  const [Country, setCountry] = useState(0);
   const location = useLocation();
   const data = location.state;
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const EditTrip = () => {
     name: data.name,
     email: data.email,
     phone_number: data.phone_number,
-    country_id: data.country_id,
+    // country_id: data.country_id,
   };
 
   const handleFormSubmit = async (values) => {
@@ -38,9 +39,9 @@ const EditTrip = () => {
             },
             ...values,
             id: data.id,
+            country_id: Country,
           }
         );
-
         if (response.status === 200) {
           navigate("/dash/showTrip", { state: { id: data.id } });
         } else {
@@ -49,9 +50,10 @@ const EditTrip = () => {
       } else {
         const token = localStorage.getItem("_auth");
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/attraction/editCompanyDetails",
+          "http://127.0.0.1:8000/api/trip/editCompanyDetails",
           {
             ...values,
+            country_id: Country,
           },
           {
             headers: {
@@ -60,11 +62,11 @@ const EditTrip = () => {
             },
           }
         );
-
+        console.log(values);
         if (response.status === 200) {
           setsend(1);
           setTimeout(() => {
-            navigate("/dashAttraction");
+            navigate("/dashTrip");
           }, 5000);
         } else {
           throw await response;
@@ -101,7 +103,7 @@ const EditTrip = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <GetCity />
+              <GetCity setCity={setCity} setCountry={setCountry} />
               <TextField
                 variant="filled"
                 type="text"

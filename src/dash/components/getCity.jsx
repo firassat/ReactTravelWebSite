@@ -7,6 +7,7 @@ import Select from "@mui/material/Select";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import { TextField } from "@mui/material";
 
 export default function GetCity(props) {
   const [cuntry, setcuntry] = useState("");
@@ -14,12 +15,7 @@ export default function GetCity(props) {
   const [cityid, setcityid] = useState(1);
   const [cityData, setcityData] = useState([]);
   props.setCity(cityid);
-  const handleChange = (event) => {
-    setcuntry(event.target.value);
-  };
-  const handleChangeCity = (event) => {
-    setcityid(event.target.value);
-  };
+  props.setCountry(cuntry);
 
   async function getCuntry() {
     await axios
@@ -34,6 +30,7 @@ export default function GetCity(props) {
   useEffect(() => {
     getCuntry();
   }, []);
+
   async function getCity() {
     await axios
       .get("http://127.0.0.1:8000/api/admin/showcity?country_id=" + cuntry)
@@ -48,32 +45,34 @@ export default function GetCity(props) {
     <
       // sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}
     >
-      <FormControl sx={{ gridColumn: "span 2" }}>
-        <InputLabel id="country_id">Country</InputLabel>
-        <Select
-          value={cuntry ? cuntry : ""}
-          label="Cuntry"
-          onChange={handleChange}
-        >
-          {repositories.map((e) => {
-            return <MenuItem value={`${e.id}`}>{e.name}</MenuItem>;
-          })}
-        </Select>
-      </FormControl>
-      <FormControl sx={{ gridColumn: "span 2" }}>
-        <InputLabel id="City">City</InputLabel>
-        <Select
-          value={cityid ? cityid : ""}
-          label="City"
-          onChange={handleChangeCity}
-        >
-          {cityData
-            ? cityData.map((e) => {
-                return <MenuItem value={`${e.id}`}>{e.name}</MenuItem>;
-              })
-            : null}
-        </Select>
-      </FormControl>
+      <TextField
+        sx={{ gridColumn: "span 2" }}
+        select
+        label="Select Cuntry"
+        value={cuntry ? cuntry : ""}
+        onChange={(newValue) => setcuntry(newValue.target.value)}
+        size="small"
+        name="country_id"
+      >
+        {repositories.map((e) => {
+          return <MenuItem value={e.id ? e.id : ""}>{e.name}</MenuItem>;
+        })}
+      </TextField>
+      <TextField
+        sx={{ gridColumn: "span 2" }}
+        select
+        label="Select City"
+        value={cityid ? cityid : ""}
+        onChange={(newValue) => setcityid(newValue.target.value)}
+        size="small"
+        name="city_id"
+      >
+        {cityData
+          ? cityData.map((e) => {
+              return <MenuItem value={e.id ? e.id : ""}>{e.name}</MenuItem>;
+            })
+          : null}
+      </TextField>
     </>
   );
 }
