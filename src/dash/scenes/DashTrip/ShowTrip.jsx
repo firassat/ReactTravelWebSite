@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
+import AddTrip from "./AddTrip";
 import {
   Box,
   IconButton,
@@ -17,7 +19,7 @@ function ShowTrip() {
   const location = useLocation();
   let [data, setdata] = useState([]);
   let [trip, setTrip] = useState([]);
-
+  let [addScreen, setAddScreen] = useState([0, 0, 0]);
   const [pageOffset, setPageOffset] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [id, setid] = useState(0);
@@ -237,7 +239,7 @@ function ShowTrip() {
                             bottom: "calc(50% - 1rem)",
                             left: "-120px",
                             color: "brown",
-                            zIndex: "10",
+                            zIndex: "2",
                           }}
                         >
                           <IconButton
@@ -253,9 +255,14 @@ function ShowTrip() {
                           <IconButton
                             style={{ fontSize: "10px" }}
                             onClick={() => {
-                              navigate("/dashTrip/reservationsTrip", {
-                                state: { id: e.id },
-                              });
+                              navigate(
+                                `/${
+                                  mainAdmin ? "dash" : "dashTrip"
+                                }/reservationsTrip`,
+                                {
+                                  state: { id: e.id },
+                                }
+                              );
                             }}
                           >
                             Reservations
@@ -315,13 +322,33 @@ function ShowTrip() {
             <Box
               className="deletebutoomShow edit"
               backgroundColor="#9E9E9E"
-              onClick={async () => {
-                navigate("/dashTrip/addTrip", {
-                  state: data,
-                });
+              onClick={() => {
+                setAddScreen([0, 1, 0]);
               }}
             >
               Add Trip
+            </Box>
+          ) : null}
+          {addScreen[1] ? (
+            <Box
+              className="sentSuccss"
+              sx={{ backgroundColor: colors.primary[400] }}
+            >
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: "25px",
+                  right: "25px",
+                }}
+                onClick={() => setAddScreen([0, !addScreen[1], 0])}
+              >
+                <CloseIcon />
+              </IconButton>
+              <AddTrip
+                id={data.id}
+                setReload={setReload}
+                setAddScreen={setAddScreen}
+              />
             </Box>
           ) : null}
         </Box>

@@ -5,19 +5,14 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
-import BackButtom from "../../components/BackButtom";
 
-const AdminForm = () => {
+const AdminForm = (props) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const locaction = useLocation();
-  const url = locaction.state.url;
 
-  const navigate = useNavigate();
   const handleFormSubmit = async (values) => {
     try {
       const response = await axios.post(
-        url,
+        props.url,
 
         {
           headers: {
@@ -26,9 +21,10 @@ const AdminForm = () => {
           ...values,
         }
       );
-      console.log(response);
+
       if (response.status === 200) {
-        navigate("/dash/adminTeam");
+        props.setReload((prev) => prev + 1);
+        props.setAddScreen([0, 0, 0]);
       } else {
         throw await response;
       }
@@ -39,8 +35,7 @@ const AdminForm = () => {
 
   return (
     <Box mx="200px" my="40px">
-      <Header title="ADD Admin" subtitle="Create a new profile for all uses" />
-      <BackButtom />
+      <Header title="ADD Admin" subtitle="Create a new admin" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -58,10 +53,7 @@ const AdminForm = () => {
             <Box
               display="grid"
               gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-              sx={{
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              }}
+              gridTemplateColumns="repeat(4, 100px)"
             >
               <TextField
                 fullWidth
@@ -117,7 +109,7 @@ const AdminForm = () => {
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="center" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
                 Create New Admin
               </Button>

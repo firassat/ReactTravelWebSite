@@ -150,11 +150,6 @@ const App = () => {
                               <Route path="/company" element={<Company />} />
                               <Route path="/userTeam" element={<UserTeam />} />
                               <Route path="/userform" element={<UserForm />} />
-                              <Route path="/addCity" element={<AddCity />} />
-                              <Route
-                                path="/adminForm"
-                                element={<AdminForm />}
-                              />
                               <Route path="/editUser" element={<EditForm />} />
                               <Route
                                 path="/showAttraction"
@@ -169,6 +164,10 @@ const App = () => {
                               <Route
                                 path="/tripDetails"
                                 element={<TripDetails />}
+                              />
+                              <Route
+                                path="/reservationsTrip"
+                                element={<ReservationsTrip />}
                               />
                               <Route
                                 path="/showHotel"

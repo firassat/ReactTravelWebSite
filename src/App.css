@@ -122,9 +122,8 @@ Small
   border-radius: 0 0 30px 30px;
 }
 .sentSuccss {
-  background-color: #000000b4 !important;
-  width: 499px;
-  height: 300px;
+  min-width: 40%;
+  min-height: 25%;
   top: 50%;
   left: 50%;
   position: fixed;
@@ -136,4 +135,5 @@ Small
   padding: 20px;
   z-index: 5;
   justify-content: center;
+  border: 2px solid gray;
 }

@@ -9,7 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UploadPhoto from "../../components/UploadPhoto";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import AddInput from "../../components/AddInput";
+import AddTripInput from "../../components/AddTripInput";
 function TripDetails() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -202,7 +202,7 @@ function TripDetails() {
                       >
                         <CloseIcon />
                       </IconButton>
-                      <AddInput
+                      <AddTripInput
                         url={"http://127.0.0.1:8000/api/admin/addNewDate"}
                         id={data.id}
                         setReload={setReload}
@@ -214,7 +214,7 @@ function TripDetails() {
                           name="departure_date"
                           placeholder="Departure_date"
                         />
-                      </AddInput>
+                      </AddTripInput>
                     </Box>
                   ) : null}
                   <Box
@@ -296,7 +296,7 @@ function TripDetails() {
                       >
                         <CloseIcon />
                       </IconButton>
-                      <AddInput
+                      <AddTripInput
                         url={"http://127.0.0.1:8000/api/admin/addNewOffer"}
                         id={data.id}
                         setReload={setReload}
@@ -312,7 +312,7 @@ function TripDetails() {
                           name="offer_end"
                           placeholder="offer_end"
                         />
-                      </AddInput>
+                      </AddTripInput>
                     </Box>
                   ) : null}
                   <Box

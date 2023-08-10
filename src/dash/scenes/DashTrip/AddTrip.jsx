@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, MenuItem, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
 
-import { useNavigate, useLocation } from "react-router-dom";
-import BackButtom from "../../components/BackButtom";
 import GetCity from "../../components/getCity";
 import InputDaysTrip from "../../components/InputDaysTrip";
 
-const AddTrip = () => {
+const AddTrip = (props) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
-  const [send, setsend] = useState(0);
   const [city, setCity] = useState(0);
   const [Country, setCountry] = useState(0);
   const [days_number, setdays_number] = useState(1);
   const [days_data, setdaysfata] = useState({});
   const [days_input, setdays_input] = useState(0);
-  const navigate = useNavigate();
   const token = localStorage.getItem("_auth");
-  const location = useLocation();
-  const id = location.state.id;
 
   const handleFormSubmit = async (values) => {
     try {
@@ -31,7 +25,7 @@ const AddTrip = () => {
         "http://127.0.0.1:8000/api/trip/addNewTrip",
         {
           ...values,
-          trip_company_id: id,
+          trip_company_id: props.id,
           destination: city,
           ...days_data,
         },
@@ -42,12 +36,10 @@ const AddTrip = () => {
           },
         }
       );
-      console.log(response);
+
       if (response.status === 200) {
-        setsend(1);
-        setTimeout(() => {
-          navigate("/dashTrip");
-        }, 5000);
+        props.setReload((prev) => prev + 1);
+        props.setAddScreen([0, 0, 0]);
       } else {
         throw await response;
       }
@@ -61,16 +53,15 @@ const AddTrip = () => {
       days_data[`title_${i}`] = e.target[i - 1].value;
       days_data[`details_${i}`] = e.target[i - 1].value;
     }
+
     setdays_input(0);
   };
   useEffect(() => {
     setdays_input(days_number);
   }, [days_number]);
-
   return (
     <Box m="40px auto" width="70%">
-      <Header title="Add Attraction" />
-      <BackButtom />
+      <Header title="Add Trip" />
       {days_input ? (
         <InputDaysTrip days_number={days_number} onSubmitDays={onSubmitDays} />
       ) : null}
@@ -163,32 +154,30 @@ const AddTrip = () => {
                 helperText={touched.max_persons && errors.max_persons}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="days_number"
+                sx={{ gridColumn: "span 2" }}
+                select
+                label="Days Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.days_number}
                 name="days_number"
-                error={!!touched.days_number && !!errors.days_number}
-                helperText={touched.days_number && errors.days_number}
-                sx={{ gridColumn: "span 2" }}
-              />
+              >
+                <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={6}>6</MenuItem>
+              </TextField>
             </Box>
 
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
                 Add
               </Button>
-              {send ? (
-                <Box className="sentSuccss" textAlign={"center"}>
-                  <h2> Added successfully</h2>
-                </Box>
-              ) : (
-                ""
-              )}
             </Box>
           </form>
         )}

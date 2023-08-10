@@ -194,7 +194,7 @@ const Topbar = (props) => {
           <SettingsOutlinedIcon />
         </IconButton>
         <IconButton sx={{ fontSize: "15px" }} onClick={() => signOut()}>
-          Sgin Out
+          Sign Out
         </IconButton>
       </Box>
     </Box>

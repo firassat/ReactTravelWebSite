@@ -1,18 +1,28 @@
 import React from "react";
-import { Box, Pagination, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Pagination,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { tokens } from "../../../theme";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import AdminForm from "../AdminForm";
 
-function AttAdmins() {
+function TripAdmins() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [reload, setreload] = useState(0);
+  let [reload, setReload] = useState([]);
   const [repositories, setRepositories] = useState([]);
   const [pageOffset, setPageOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
+  let [addScreen, setAddScreen] = useState([0, 0, 0]);
 
   async function getUsers() {
     await axios
@@ -46,7 +56,16 @@ function AttAdmins() {
   const handlePageChange = (event, page) => {
     setPageOffset(page);
   };
-  console.log(repositories);
+
+  const deleteInput = (url, id) => {
+    const response = axios.get(url + id, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    setReload((priv) => priv + 1);
+  };
+
   return (
     <Box
       m="15px 0 40px 0"
@@ -74,105 +93,97 @@ function AttAdmins() {
           },
         }}
       >
-        <Link
-          to={"/dash/adminForm"}
-          state={{ url: "http://127.0.0.1:8000/api/admin/makeNewTripAdmin" }}
+        <IconButton
+          onClick={() => setAddScreen([0, !addScreen[1], 0])}
+          sx={{ fontSize: "12px" }}
         >
+          <AddIcon />
           Add Admin
-        </Link>
+        </IconButton>
+        {addScreen[1] ? (
+          <Box
+            className="sentSuccss"
+            sx={{ backgroundColor: colors.primary[400] }}
+          >
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "25px",
+                right: "25px",
+              }}
+              onClick={() => setAddScreen([0, !addScreen[1], 0])}
+            >
+              <CloseIcon />
+            </IconButton>
+            <AdminForm
+              url={"http://127.0.0.1:8000/api/admin/makeNewTripAdmin"}
+              setReload={setReload}
+              setAddScreen={setAddScreen}
+            />
+          </Box>
+        ) : null}
       </Box>
-      {repositories && (
+
+      {repositories[0] && (
         <Box
-          gridColumn="span 12"
-          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
           overflow-style="none"
           borderRadius="30px"
           p="30px 50px"
+          position={"relative"}
         >
           <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
+            display="grid"
+            gridTemplateColumns="repeat(4, 25%)"
             borderBottom={`1px solid ${colors.primary[800]}`}
-            p="15px 20px"
-            className="adminTable"
+            p="20px "
+            gap="20px"
+            justifyContent={"center"}
+            textAlign={"center"}
           >
-            <Box>
-              <Typography
-                color={colors.greenAccent[500]}
-                variant="h5"
-                fontWeight="600"
-              >
-                Id
-              </Typography>
-            </Box>
-            <Box>
-              <Typography
-                color={colors.grey[100]}
-                fontWeight={"900"}
-                variant="h5"
-              >
-                User Name
-              </Typography>
-            </Box>
-            <Box>
-              <Typography
-                color={colors.grey[100]}
-                fontWeight={"900"}
-                variant="h5"
-              >
-                Attraction
-              </Typography>
-            </Box>
-            <Box>
-              <Typography
-                color={colors.grey[100]}
-                fontWeight={"900"}
-                variant="h5"
-              >
-                Delete
-              </Typography>
-            </Box>
+            <Typography fontWeight={"900"} color={colors.greenAccent[500]}>
+              Id
+            </Typography>
+            <Typography fontWeight={"900"}>Name</Typography>
+            <Typography fontWeight={"900"}>User Name</Typography>
+            <Typography fontWeight={"900"}>Company Name</Typography>
           </Box>
           {repositories.map((e, i) => (
             <Box
-              key={`${e.id}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
+              display="grid"
+              gridTemplateColumns="repeat(4, 25%)"
               borderBottom={`1px solid ${colors.primary[800]}`}
-              p="15px 20px"
+              p="20px "
+              gap="20px"
+              key={`${e.id}-${i}`}
+              position={"relative"}
+              justifyContent={"center"}
+              textAlign={"center"}
             >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {e.id}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>
-                <Typography color={colors.grey[100]}>{e.user_name}</Typography>
-              </Box>
-              <Box color={colors.grey[100]}>
-                <Typography color={colors.grey[100]}>
-                  {e.trip_company && e.trip_company.name}
-                </Typography>
-              </Box>
-              <Box
-                className="deletebutoom"
+              <Typography color={colors.greenAccent[500]}>{e.id}</Typography>
+              <Typography>{e.full_name}</Typography>
+              <Typography>{e.user_name}</Typography>
+              <Typography>
+                {e.trip_company ? e.trip_company.name : ""}
+              </Typography>
+
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  bottom: "calc(50% - 1rem)",
+                  left: "-10px",
+                  color: "brown",
+                }}
                 onClick={() => {
-                  axios.get(
-                    "http://127.0.0.1:8000/api/admin/deleteTripAdmin?id=" + e.id
+                  deleteInput(
+                    "http://127.0.0.1:8000/api/admin/deleteTripAdmin?id=",
+                    e.id
                   );
-                  setreload((priv) => priv + 1);
                 }}
               >
-                Delete
-              </Box>
+                <DeleteIcon />
+              </IconButton>
             </Box>
           ))}
         </Box>
@@ -187,4 +198,4 @@ function AttAdmins() {
   );
 }
 
-export default AttAdmins;
+export default TripAdmins;

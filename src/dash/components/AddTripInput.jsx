@@ -22,6 +22,7 @@ function AddInput(props) {
       console.log(response);
       if (response.status === 200) {
         props.setReload((priv) => priv + 1);
+        props.setAddScreen([0, 0, 0]);
       } else {
         throw await response;
       }

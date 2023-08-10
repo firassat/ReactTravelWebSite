@@ -5,11 +5,11 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
-import DeleteIcon from "@mui/icons-material/Delete";
 import UploadPhoto from "../../components/UploadPhoto";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
-import AddInput from "../../components/AddInput";
+import AddTripInput from "../../components/AddTripInput";
 function TripDetails() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -116,12 +116,17 @@ function TripDetails() {
                     <AddIcon />
                   </IconButton>
                   {addScreen[0] ? (
-                    <Box className="sentSuccss">
+                    <Box
+                      className="sentSuccss"
+                      sx={{
+                        backgroundColor: `${colors.primary[400]} !important `,
+                      }}
+                    >
                       <IconButton
                         sx={{
                           position: "absolute",
-                          bottom: "0",
-                          left: "calc(50% - 1rem)",
+                          top: "25px",
+                          right: "25px",
                         }}
                         onClick={() => setAddScreen([!addScreen[0], 0, 0])}
                       >
@@ -133,6 +138,8 @@ function TripDetails() {
                         }
                         id={data.id}
                         setReload={setReload}
+                        type={"trip"}
+                        setAddScreen={setAddScreen}
                       />
                     </Box>
                   ) : null}
@@ -191,22 +198,28 @@ function TripDetails() {
                     <AddIcon />
                   </IconButton>
                   {addScreen[1] ? (
-                    <Box className="sentSuccss">
+                    <Box
+                      className="sentSuccss"
+                      sx={{
+                        backgroundColor: `${colors.primary[400]} !important `,
+                      }}
+                    >
                       <IconButton
                         sx={{
                           position: "absolute",
-                          bottom: "0",
-                          left: "calc(50% - 1rem)",
+                          top: "25px",
+                          right: "25px",
                         }}
                         onClick={() => setAddScreen([0, !addScreen[1], 0])}
                       >
                         <CloseIcon />
                       </IconButton>
-                      <AddInput
+                      <AddTripInput
                         url={"http://127.0.0.1:8000/api/admin/addNewDate"}
                         id={data.id}
                         setReload={setReload}
                         inputNumber={2}
+                        setAddScreen={setAddScreen}
                       >
                         <input type="number" name="price" placeholder="Price" />
                         <input
@@ -214,7 +227,7 @@ function TripDetails() {
                           name="departure_date"
                           placeholder="Departure_date"
                         />
-                      </AddInput>
+                      </AddTripInput>
                     </Box>
                   ) : null}
                   <Box
@@ -285,22 +298,28 @@ function TripDetails() {
                     <AddIcon />
                   </IconButton>
                   {addScreen[2] ? (
-                    <Box className="sentSuccss">
+                    <Box
+                      className="sentSuccss"
+                      sx={{
+                        backgroundColor: `${colors.primary[400]} !important `,
+                      }}
+                    >
                       <IconButton
                         sx={{
                           position: "absolute",
-                          bottom: "0",
-                          left: "calc(50% - 1rem)",
+                          top: "25px",
+                          right: "25px",
                         }}
                         onClick={() => setAddScreen([0, 0, !addScreen[2]])}
                       >
                         <CloseIcon />
                       </IconButton>
-                      <AddInput
+                      <AddTripInput
                         url={"http://127.0.0.1:8000/api/admin/addNewOffer"}
                         id={data.id}
                         setReload={setReload}
                         inputNumber={2}
+                        setAddScreen={setAddScreen}
                       >
                         <input
                           type="number"
@@ -312,7 +331,7 @@ function TripDetails() {
                           name="offer_end"
                           placeholder="offer_end"
                         />
-                      </AddInput>
+                      </AddTripInput>
                     </Box>
                   ) : null}
                   <Box

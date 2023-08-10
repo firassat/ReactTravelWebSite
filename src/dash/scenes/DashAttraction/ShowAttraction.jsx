@@ -19,7 +19,6 @@ function ShowAttraction() {
         .then((data) => {
           setdata(data.data);
         });
-      console.log(data);
     } else {
       await axios
         .get("http://127.0.0.1:8000/api/attraction/getAttractionDetails", {
@@ -37,7 +36,7 @@ function ShowAttraction() {
   useEffect(() => {
     getUsers();
   }, []);
-
+  console.log(data);
   if (!data) {
     return (
       <Box
