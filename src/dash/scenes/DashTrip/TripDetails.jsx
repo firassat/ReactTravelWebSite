@@ -94,17 +94,7 @@ function TripDetails() {
               <h6>photos: </h6>
 
               {data.photos && (
-                <Box
-                  backgroundColor={colors.primary[400]}
-                  p="10px 15px"
-                  alignItems={"center"}
-                  textAlign={"center"}
-                  width="80%"
-                  display="flex"
-                  flexWrap="wrap"
-                  gap={"30px"}
-                  position={"relative"}
-                >
+                <Box backgroundColor={colors.primary[400]} className="showIn">
                   <IconButton
                     sx={{
                       position: "absolute",
@@ -159,7 +149,7 @@ function TripDetails() {
                         <IconButton
                           sx={{
                             position: "absolute",
-                            bottom: "0",
+                            bottom: "10px",
                             left: "calc(50% - 1rem)",
                             color: "brown",
                           }}
@@ -422,16 +412,7 @@ function TripDetails() {
               <h6>services: </h6>
 
               {data.services && (
-                <Box
-                  backgroundColor={colors.primary[400]}
-                  p="10px 15px"
-                  alignItems={"center"}
-                  textAlign={"center"}
-                  width="80%"
-                  display="flex"
-                  flexWrap="wrap"
-                  gap={"30px"}
-                >
+                <Box backgroundColor={colors.primary[400]} className="showIn">
                   {data.services.map((e, i) => (
                     <Box key={`${e.id}-${i}`}>
                       <Typography>{e.service}</Typography>
@@ -444,16 +425,7 @@ function TripDetails() {
               <h6>activities: </h6>
 
               {data.activities && (
-                <Box
-                  backgroundColor={colors.primary[400]}
-                  p="10px 15px"
-                  alignItems={"center"}
-                  textAlign={"center"}
-                  width="80%"
-                  display="flex"
-                  flexWrap="wrap"
-                  gap={"30px"}
-                >
+                <Box backgroundColor={colors.primary[400]} className="showIn">
                   {data.activities.map((e, i) => (
                     <Box key={`${e.id}-${i}`}>
                       <Typography>{e.activity}</Typography>

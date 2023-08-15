@@ -13,13 +13,13 @@ const AddRoom = (props) => {
   const [type, setType] = useState({});
   const [RoomFeatures, setRoomFeatures] = useState({});
   const AllRoomFeatures = [];
-  console.log(props.id);
+
   const token = localStorage.getItem("_auth");
 
   const handleFormSubmit = async (values) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/admin/addMultiRooms",
+        "http://127.0.0.1:8000/api/hotel/addMultiRooms",
         {
           ...values,
           selectedFeatures: AllRoomFeatures,
@@ -32,9 +32,9 @@ const AddRoom = (props) => {
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
         props.setReload((priv) => priv + 1);
+        props.setAddScreen([0, 0, 0]);
       } else {
         throw await response;
       }
@@ -46,7 +46,7 @@ const AddRoom = (props) => {
 
   const roomType = async () => {
     const response = await axios
-      .get("http://127.0.0.1:8000/api/admin/getRoomType", {
+      .get("http://127.0.0.1:8000/api/hotel/getRoomType", {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ const AddRoom = (props) => {
 
   const getRoomFeatures = async () => {
     const response = await axios
-      .get("http://127.0.0.1:8000/api/admin/getRoomFeatures", {
+      .get("http://127.0.0.1:8000/api/hotel/getRoomFeatures", {
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
@@ -94,6 +94,7 @@ const AddRoom = (props) => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
+            {console.log(values)}
             <Box display="grid" gap="30px" gridTemplateColumns="repeat(2,50%)">
               <TextField
                 variant="filled"
@@ -171,6 +172,7 @@ const AddRoom = (props) => {
                 value={values.RoomFeatures ? values.RoomFeatures : ""}
                 name="RoomFeatures"
               >
+                <MenuItem disabled>select</MenuItem>
                 {RoomFeatures[0] &&
                   RoomFeatures.map((e) => {
                     return <MenuItem value={e.id}>{e.name}</MenuItem>;
@@ -185,11 +187,43 @@ const AddRoom = (props) => {
                 value={values.room_type ? values.room_type : ""}
                 name="room_type"
               >
+                <MenuItem disabled>select</MenuItem>
                 {type[0] &&
                   type.map((e) => {
                     return <MenuItem value={e.id}>{e.name}</MenuItem>;
                   })}
               </TextField>
+              {/* <Box backgroundColor={"inherit"}>
+                <label htmlFor="fa">Choose a Room Type:</label>
+                <select
+                  class="form-select form-select-bg:black"
+                  id="fa"
+                  name="room_type"
+                  onChange={handleChange}
+                >
+                  {type[0] &&
+                    type.map((e, i) => {
+                      return (
+                        <option key={i} value={e.id}>
+                          {e.name}
+                        </option>
+                      );
+                    })}
+                </select>
+                {err ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "12px",
+                      margin: "10px",
+                    }}
+                  >
+                    {err.message}
+                  </p>
+                ) : (
+                  ""
+                )}
+              </Box> */}
               <Box
                 display="flex"
                 flexDirection={"column"}

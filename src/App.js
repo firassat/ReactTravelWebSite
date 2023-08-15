@@ -29,7 +29,6 @@ import {
   SidebarAtt,
   SidebarTrip,
   UserForm,
-  AdminForm,
   EditForm,
   Calendar,
   Company,
@@ -37,6 +36,7 @@ import {
   ShowAttraction,
   EditAttraction,
   AddAttraction,
+  ReservationsAtt,
   ShowTrip,
   EditTrip,
   AddTrip,
@@ -209,6 +209,10 @@ const App = () => {
                               <Route
                                 path="/editAttraction"
                                 element={<EditAttraction />}
+                              />
+                              <Route
+                                path="/reservationsAtt"
+                                element={<ReservationsAtt />}
                               />
                             </Routes>
                           </Box>

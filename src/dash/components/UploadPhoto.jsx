@@ -9,6 +9,7 @@ const UploadPhoto = (props) => {
     const formData = new FormData();
     formData.append("photo", file);
     let aa = formData.get("photo");
+    let token = localStorage.getItem("_auth");
     // make a POST request to the File Upload API with the FormData object and Rapid API headers
     axios
       .post(
@@ -22,6 +23,7 @@ const UploadPhoto = (props) => {
           headers: {
             Accept: "application/json",
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("_auth")}`,
           },
         }
       )

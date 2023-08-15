@@ -9,7 +9,7 @@ import Brightness1Icon from "@mui/icons-material/Brightness1";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { useRef } from "react";
+
 const Topbar = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -98,6 +98,7 @@ const Topbar = (props) => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
+
         <IconButton position={"relative"} onClick={navHandl} ref={ref}>
           <NotificationsOutlinedIcon />
         </IconButton>
@@ -113,6 +114,8 @@ const Topbar = (props) => {
               overflow: "auto",
               zIndex: "5",
               border: "2px solid gray",
+              boxShadow:
+                " 0px 5px 5px -3px rgba(0, 0, 0, 0.2),0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important",
             }}
           >
             {repositories.data && (

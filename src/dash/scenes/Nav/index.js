@@ -12,9 +12,10 @@ function Nav() {
   let [oldCompany, setOldCompany] = useState([]);
   const repo = location.state.repo;
   let url, url2;
-  if (repo.type === "attraction_company")
+  if (repo.type === "attraction_company") {
     url = "http://127.0.0.1:8000/api/admin/getUpdatingDetails?id=";
-  else if (repo.type === "trip_company") {
+    url2 = "http://127.0.0.1:8000/api/admin/acceptUpdate";
+  } else if (repo.type === "trip_company") {
     url = "http://127.0.0.1:8000/api/admin/getTripUpdatingDetails?id=";
     url2 = "http://127.0.0.1:8000/api/admin/acceptTripCompanyUpdate";
   } else if (repo.type === "hotel_company") {
@@ -59,21 +60,35 @@ function Nav() {
       console.log(error);
     }
   };
-  // if (data.add_or_update) {
-  //   const getTrip = async () => {
-  //     await axios
-  //       .get(
-  //         "http://127.0.0.1:8000/api/admin/getTripCompanyDetails?id=" +
-  //           data.trip_company_id
-  //       )
-  //       .then((response) => response.data)
-  //       .then((data) => data.data)
-  //       .then((data) => {
-  //         setOldCompany(data);
-  //         console.log(data);
-  //       });
-  //   };
-  // }
+  const getold = async () => {
+    if (data.add_or_update) {
+      let url;
+      let id;
+      if (repo.type === "attraction_company") {
+        url = "http://127.0.0.1:8000/api/admin/getAttractionDetails?id=";
+        id = data.attraction_id;
+      } else if (repo.type === "trip_company") {
+        url = "http://127.0.0.1:8000/api/admin/getTripCompanyDetails?id=";
+        id = data.trip_company_id;
+      } else if (repo.type === "hotel_company") {
+        url = "http://127.0.0.1:8000/api/admin/getHotelUpdatingDetails?id=";
+      }
+
+      await axios
+        .get(url + id)
+        .then((response) => response.data)
+        .then((data) => data.data)
+        .then((data) => {
+          setOldCompany(data);
+          console.log(data);
+        });
+    }
+  };
+  console.log(data);
+  useEffect(() => {
+    getold();
+  }, []);
+
   return (
     data.admin && (
       <Box>
@@ -99,34 +114,36 @@ function Nav() {
               <h6>
                 Company name
                 <br />
-                {oldCompany ? `The old` : ""}
+                {oldCompany && data.add_or_update ? `The old` : ""}
               </h6>
               <h6>
                 {data.name}
                 <br />
-                {oldCompany ? ` ${oldCompany.name}` : ""}
+                {oldCompany && data.add_or_update ? ` ${oldCompany.name}` : ""}
               </h6>
             </li>
             <li>
               <h6>
                 Email <br />
-                {oldCompany ? `The old` : ""}
+                {oldCompany && data.add_or_update ? `The old` : ""}
               </h6>{" "}
               <h6>
                 {data.email}
                 <br />
-                {oldCompany ? ` ${oldCompany.email}` : ""}
+                {oldCompany && data.add_or_update ? ` ${oldCompany.email}` : ""}
               </h6>
             </li>
             <li>
               <h6>
                 Phone Number <br />
-                {oldCompany ? `The old` : ""}
+                {oldCompany && data.add_or_update ? `The old` : ""}
               </h6>{" "}
               <h6>
                 {data.phone_number}
                 <br />
-                {oldCompany ? ` ${oldCompany.phone_number}` : ""}
+                {oldCompany && data.add_or_update
+                  ? ` ${oldCompany.phone_number}`
+                  : ""}
               </h6>
             </li>
           </ul>

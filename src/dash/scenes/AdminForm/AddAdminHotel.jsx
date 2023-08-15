@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
+
 import Header from "../../components/Header";
 import axios from "axios";
 
-const AdminForm = (props) => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-
+const AddAdminHotel = (props) => {
   const handleFormSubmit = async (values) => {
     try {
       const response = await axios.post(
@@ -21,7 +19,7 @@ const AdminForm = (props) => {
           ...values,
         }
       );
-      console.log(response);
+
       if (response.status === 200) {
         props.setReload((prev) => prev + 1);
         props.setAddScreen([0, 0, 0]);
@@ -59,14 +57,27 @@ const AdminForm = (props) => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Name"
+                label="first_name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.full_name}
-                name="full_name"
-                error={!!touched.full_name && !!errors.full_name}
-                helperText={touched.full_name && errors.full_name}
-                sx={{ gridColumn: "span 4" }}
+                value={values.first_name}
+                name="first_name"
+                error={!!touched.first_name && !!errors.first_name}
+                helperText={touched.first_name && errors.first_name}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="last_name"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.last_name}
+                name="last_name"
+                error={!!touched.last_name && !!errors.last_name}
+                helperText={touched.last_name && errors.last_name}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
@@ -79,6 +90,19 @@ const AdminForm = (props) => {
                 name="user_name"
                 error={!!touched.user_name && !!errors.user_name}
                 helperText={touched.user_name && errors.user_name}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.email}
+                name="email"
+                error={!!touched.email && !!errors.email}
+                helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 4" }}
               />
 
@@ -137,4 +161,4 @@ const initialValues = {
   // password: "",
 };
 
-export default AdminForm;
+export default AddAdminHotel;

@@ -9,7 +9,13 @@ function AttCompany() {
   const colors = tokens(theme.palette.mode);
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 1 },
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "name",
       headerName: "Name",

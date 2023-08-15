@@ -35,7 +35,7 @@ export default function GetCity(props) {
     await axios
       .get("http://127.0.0.1:8000/api/admin/showcity?country_id=" + cuntry)
       .then((response) => response.data)
-      .then((response) => setcityData(response.cities));
+      .then((response) => setcityData(response.city));
   }
   useEffect(() => {
     cuntry && getCity();

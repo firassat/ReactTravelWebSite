@@ -1,6 +1,5 @@
 import axios from "axios";
 import React from "react";
-import { useState } from "react";
 
 function AddInput(props) {
   const handleFormSubmit = async (e) => {
@@ -19,7 +18,7 @@ function AddInput(props) {
           },
         }
       );
-      console.log(response);
+
       if (response.status === 200) {
         props.setReload((priv) => priv + 1);
         props.setAddScreen([0, 0, 0]);

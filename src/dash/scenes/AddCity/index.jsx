@@ -5,19 +5,15 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
-const AddCity = () => {
+const AddCity = (props) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const location = useLocation();
-  const id = location.state.id;
-  const navigate = useNavigate();
+
   const handleFormSubmit = async (values) => {
     try {
-      if (!id) {
+      if (!props.id) {
         const response = await axios.post(
           "http://127.0.0.1:8000/api/admin/country",
-
           {
             headers: {
               Accept: "application/json",
@@ -26,10 +22,9 @@ const AddCity = () => {
             ...values,
           }
         );
-
-        console.log(response);
         if (response.status === 200) {
-          navigate("/dash");
+          props.setAddScreen([0, 0, 0]);
+          props.setReload((pre) => pre + 1);
         } else {
           throw await response;
         }
@@ -39,7 +34,7 @@ const AddCity = () => {
 
           {
             ...values,
-            country_id: id,
+            country_id: props.id,
           },
           {
             headers: {
@@ -48,10 +43,9 @@ const AddCity = () => {
             },
           }
         );
-
-        console.log(response);
         if (response.status === 200) {
-          navigate("/dash");
+          props.setAddScreen([0, 0, 0]);
+          props.setReload((pre) => pre + 1);
         } else {
           throw await response;
         }
@@ -60,8 +54,8 @@ const AddCity = () => {
   };
   return (
     <Box mx="200px" my="40px">
-      <Header title="ADD Country" />
-      <BackButtom />
+      <Header title={`${props.id ? "Add City" : "Add Country"}`} />
+
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}

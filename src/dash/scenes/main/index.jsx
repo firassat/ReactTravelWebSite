@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import { mockTransactions } from "../../../data/mockData";
 import EmailIcon from "@mui/icons-material/Email";
@@ -7,20 +7,22 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
-import MainChart from "../../components/MainChart";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import AddCity from "../AddCity";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [repositories, setRepositories] = useState([]);
-  const [cityid, setcityid] = useState(1);
+  const [country, setcountry] = useState(1);
   const [cityNow, setcityNow] = useState([]);
   const [cityData, setcityData] = useState([]);
+  let [addScreen, setAddScreen] = useState([0, 0, 0]);
+  let [reload, setReload] = useState([]);
+
   async function getCuntry() {
     await axios
       .get("http://127.0.0.1:8000/api/getCountries")
@@ -31,21 +33,20 @@ const Dashboard = () => {
         setcityNow(response.countries[0].name);
       });
   }
-
   useEffect(() => {
     getCuntry();
-  }, []);
+  }, [reload]);
   async function getCity() {
     await axios
-      .get("http://127.0.0.1:8000/api/admin/showcity?country_id=" + cityid)
+      .get("http://127.0.0.1:8000/api/admin/showcity?country_id=" + country)
       .then((response) => response.data)
       // .then((response) => response.data)
-      .then((response) => setcityData(response.cities));
+      .then((response) => setcityData(response.city));
   }
   useEffect(() => {
     getCity();
-  }, [cityid]);
-  
+  }, [country, reload]);
+  console.log(cityData);
   return (
     <Box m="20px" mx="50px">
       {/* HEADER */}
@@ -313,7 +314,7 @@ const Dashboard = () => {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    setcityid(e.id);
+                    setcountry(e.id);
                     setcityNow(e.name);
                   }}
                 >
@@ -339,15 +340,51 @@ const Dashboard = () => {
             borderBottom={`1px solid ${colors.primary[800]}`}
             colors={colors.grey[100]}
             p="15px"
+            position={"relative"}
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
               {cityNow} City
             </Typography>
-            <Link to={"/dash/addCity"} state={{ id: cityid }}>
+            {/* <Link to={"/dash/addCity"} state={{ id: country  }}>
               Add City
-            </Link>
+            </Link> */}
+
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "10px",
+                right: "0",
+              }}
+              onClick={() => setAddScreen([!addScreen[0], 0, 0])}
+            >
+              <AddIcon />
+            </IconButton>
+            {addScreen[0] ? (
+              <Box
+                className="sentSuccss"
+                sx={{
+                  backgroundColor: `${colors.primary[400]} !important `,
+                }}
+              >
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: "25px",
+                    right: "25px",
+                  }}
+                  onClick={() => setAddScreen([!addScreen[0], 0, 0])}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <AddCity
+                  id={country}
+                  setReload={setReload}
+                  setAddScreen={setAddScreen}
+                />
+              </Box>
+            ) : null}
           </Box>
-          {cityData &&
+          {cityData[0] &&
             cityData.map((e, i) => (
               <Box
                 key={`${e.id}-${i}`}
@@ -357,6 +394,7 @@ const Dashboard = () => {
                 borderBottom={`1px solid ${colors.primary[800]}`}
                 p="10px 15px"
               >
+                {console.log(e)}
                 <Box>
                   <Typography
                     color={colors.greenAccent[500]}

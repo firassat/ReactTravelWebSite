@@ -17,6 +17,7 @@ export { default as Login2 } from "./login/Login2";
 export { default as ShowAttraction } from "./DashAttraction/ShowAttraction";
 export { default as EditAttraction } from "./DashAttraction/EditAttravtion.jsx";
 export { default as AddAttraction } from "./DashAttraction/AddAttraction.jsx";
+export { default as ReservationsAtt } from "./DashAttraction/ReservationsAtt";
 export { default as ShowTrip } from "./DashTrip/ShowTrip";
 export { default as EditTrip } from "./DashTrip/EditTrip";
 export { default as AddTrip } from "./DashTrip/AddTrip";

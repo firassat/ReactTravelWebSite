@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import AdminForm from "../AdminForm";
+import AddAdminHotel from "../AdminForm/AddAdminHotel";
 
 function HotelAdmins() {
   const theme = useTheme();
@@ -115,7 +116,7 @@ function HotelAdmins() {
             >
               <CloseIcon />
             </IconButton>
-            <AdminForm
+            <AddAdminHotel
               url={"http://127.0.0.1:8000/api/admin/makeNewAdmin"}
               setReload={setReload}
               setAddScreen={setAddScreen}

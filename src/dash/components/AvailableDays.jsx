@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 export default function AvailableDays(props) {
-  const [checked, setChecked] = React.useState([0, 0, 0, 0, 0, 0, 0]);
+  const [checked, setChecked] = React.useState(props.initial);
   props.setChecked(checked);
   const handleChange7 = (event) => {
     setChecked([

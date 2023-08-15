@@ -5,12 +5,12 @@ import AddRoom from "../../components/AddRoom";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import {
   Box,
   IconButton,
   ImageList,
   ImageListItem,
-  Pagination,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -22,12 +22,19 @@ function ShowHotel() {
   const colors = tokens(theme.palette.mode);
   const location = useLocation();
   let [data, setdata] = useState([]);
+  let [facilities, setfacilities] = useState([]);
+  let [err, seterr] = useState({});
+  if (err.message) {
+    setTimeout(() => {
+      seterr({});
+    }, 5000);
+  }
   let [HotelRooms, setHotelRooms] = useState([]);
 
   let [addScreen, setAddScreen] = useState([0, 0, 0]);
+  let [reload, setReload] = useState([]);
 
   const navigate = useNavigate();
-  let [reload, setReload] = useState([]);
   let mainAdmin = localStorage.getItem("_auth_type") === "main_admin" ? 1 : 0;
   let token = localStorage.getItem("_auth");
 
@@ -51,7 +58,7 @@ function ShowHotel() {
     } else {
       await axios
         .post(
-          "http://127.0.0.1:8000/api/admin/OneHotel",
+          "http://127.0.0.1:8000/api/hotel/OneHotel",
           {},
           {
             headers: {
@@ -69,12 +76,12 @@ function ShowHotel() {
   useEffect(() => {
     getUsers();
   }, [reload]);
-  console.log(data);
+
   async function getHotelRooms() {
     if (data.Hotel_info)
       await axios
         .post(
-          "http://127.0.0.1:8000/api/admin/SeeAllRooms",
+          "http://127.0.0.1:8000/api/hotel/SeeAllRooms",
           { hotel_id: data.Hotel_info[0].id },
           {
             headers: {
@@ -90,10 +97,11 @@ function ShowHotel() {
   useEffect(() => {
     getHotelRooms();
   }, [reload, data]);
-  console.log(HotelRooms);
+
   const deleteRoom = (id) => {
-    const response = axios.get(
-      "http://127.0.0.1:8000/api/admin/DeleteRoom?room_id=" + id,
+    const response = axios.post(
+      "http://127.0.0.1:8000/api/hotel/deleteRoom",
+      { room_id: id },
       {
         headers: {
           Accept: "application/json",
@@ -103,6 +111,52 @@ function ShowHotel() {
     );
     setReload((priv) => priv + 1);
   };
+
+  async function gitFacil() {
+    await axios
+      .get("http://127.0.0.1:8000/api/admin/getAllFacilities")
+      .then((res) => res.data)
+      .then((res) => setfacilities(res.data));
+  }
+  useEffect(() => {
+    gitFacil();
+  }, []);
+  const AddInput = async (e) => {
+    console.log(e.target.value);
+    const response = await axios
+      .post(
+        "http://127.0.0.1:8000/api/hotel/addOneFacility",
+        { selectedFacility: e.target.value },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .catch((error) => {
+        console.log(err);
+        seterr(error.response?.data);
+      });
+    if (response?.status === 200) {
+      setReload((priv) => priv + 1);
+      setAddScreen([0, 0, 0]);
+    }
+  };
+  function deleteF(url, id) {
+    axios.post(
+      url,
+      { selectedFacility: id },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    //.then((res) => console.log(res));
+    setReload((priv) => priv + 1);
+  }
 
   // if (!data) {
   //   return (
@@ -198,22 +252,105 @@ function ShowHotel() {
             <li>
               <h6>details </h6> <h6>{data.Hotel_info[0].details}</h6>
             </li>
-            <li style={{ overflow: "hidden" }}>
+            <li style={{ overflow: "hidden", minHeight: "100px" }}>
               <h6>facilities: </h6>
               {data.Hotel_info[0].facilities && (
                 <Box
                   backgroundColor={colors.primary[400]}
-                  p="10px 15px"
+                  p="15px 25px"
                   alignItems={"center"}
                   textAlign={"center"}
                   width="80%"
-                  display="flex"
-                  flexWrap="wrap"
-                  gap={"30px"}
+                  position={"relative"}
+                  display={"flex"}
+                  gap="25px"
                 >
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      bottom: "calc(50% - 1.5rem)",
+                      left: "-20%",
+                    }}
+                    onClick={() => setAddScreen([0, 0, !addScreen[1]])}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                  {addScreen[2] ? (
+                    <Box
+                      className="sentSuccss"
+                      sx={{
+                        backgroundColor: `${colors.primary[400]} !important `,
+                      }}
+                    >
+                      <IconButton
+                        sx={{
+                          position: "absolute",
+                          top: "25px",
+                          right: "25px",
+                        }}
+                        onClick={() => setAddScreen([0, 0, 0])}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                      <Box backgroundColor={"inherit"}>
+                        <label htmlFor="fa">Choose a Facility:</label>
+                        <select
+                          id="fa"
+                          name="selectedFacility"
+                          onChange={AddInput}
+                        >
+                          {facilities[0] &&
+                            facilities.map((e, i) => {
+                              return (
+                                <option key={i} value={e.id}>
+                                  {e.name}
+                                </option>
+                              );
+                            })}
+                        </select>
+                        {err ? (
+                          <p
+                            style={{
+                              color: "red",
+                              fontSize: "12px",
+                              margin: "10px",
+                            }}
+                          >
+                            {err.message}
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                      </Box>
+                    </Box>
+                  ) : null}
+
                   {data.Hotel_info[0].facilities.map((e, i) => (
-                    <Box key={`${e.id}-${i}`}>
+                    <Box
+                      p="15px "
+                      key={`${e.id}-${i}`}
+                      position={"relative"}
+                      textAlign={"center"}
+                      justifyContent={"center"}
+                    >
                       <Typography>{e.name}</Typography>
+
+                      <IconButton
+                        sx={{
+                          position: "absolute",
+                          bottom: "calc(50% - 1rem)",
+                          right: "-20px",
+                          color: "brown",
+                        }}
+                        onClick={() => {
+                          deleteF(
+                            "http://127.0.0.1:8000/api/hotel/deleteFacility",
+                            e.id
+                          );
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </Box>
                   ))}
                 </Box>
@@ -262,7 +399,7 @@ function ShowHotel() {
                         <CloseIcon />
                       </IconButton>
                       <UploadPhoto
-                        url={"http://127.0.0.1:8000/api/admin/addPhoto"}
+                        url={"http://127.0.0.1:8000/api/hotel/addPhoto"}
                         id={data.Hotel_info[0].id}
                         setReload={setReload}
                       />
@@ -284,7 +421,7 @@ function ShowHotel() {
                         <IconButton
                           sx={{
                             position: "absolute",
-                            bottom: "0",
+                            bottom: "10px",
                             left: "calc(50% - 1rem)",
                             color: "brown",
                           }}
@@ -340,19 +477,22 @@ function ShowHotel() {
                         <CloseIcon />
                       </IconButton>
                       <AddRoom
-                        url={"http://127.0.0.1:8000/api/admin/addRoom"}
+                        url={"http://127.0.0.1:8000/api/hotel/addRoom"}
                         id={data.Hotel_info[0].id}
                         setReload={setReload}
+                        setAddScreen={setAddScreen}
                         inputNumber={2}
                       />
                     </Box>
                   ) : null}
                   <Box
                     display="grid"
-                    gridTemplateColumns="repeat(4, 22%)"
+                    gridTemplateColumns="repeat(4, 20%)"
                     borderBottom={`1px solid ${colors.primary[800]}`}
-                    p="20px "
+                    p="15px "
                     gap="20px"
+                    textAlign={"center"}
+                    justifyContent={"center"}
                   >
                     <Typography>room_type</Typography>
                     <Typography>location</Typography>
@@ -362,12 +502,14 @@ function ShowHotel() {
                   {HotelRooms.Room.map((e, i) => (
                     <Box
                       display="grid"
-                      gridTemplateColumns="repeat(4, 22%)"
+                      gridTemplateColumns="repeat(4, 20%)"
                       borderBottom={`1px solid ${colors.primary[800]}`}
-                      p="20px "
+                      p="15px "
                       gap="20px"
                       key={`${e.id}-${i}`}
                       position={"relative"}
+                      textAlign={"center"}
+                      justifyContent={"center"}
                     >
                       <Typography>{e.type.name}</Typography>
                       <Typography>{e.location}</Typography>
@@ -377,7 +519,7 @@ function ShowHotel() {
                         sx={{
                           position: "absolute",
                           bottom: "calc(50% - 1rem)",
-                          left: "-15px",
+                          right: "-10px",
                           color: "brown",
                         }}
                         onClick={() => {

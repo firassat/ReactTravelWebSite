@@ -21,28 +21,32 @@ const EditAttraction = () => {
 
   const initialValues = {
     name: data.name,
-    // email: data.email,
-    // phone_number: data.phone_number,
-    // details: data.details,
-    // adult_ability_per_day: data.adult_ability_per_day,
-    // adult_price: data.adult_price,
+    email: data.email,
+    phone_number: data.phone_number,
+    details: data.details,
+    adult_ability_per_day: data.adult_ability_per_day,
+    adult_price: data.adult_price,
     // // available_days: data.available_days,
-    // child_ability_per_day: data.child_ability_per_day,
-    // child_price: data.child_price,
-    // close_at: data.close_at,
-    // location: data.location,
-    // // num_of_ratings: data.num_of_ratings,
-    // open_at: data.open_at,
-    // website_url: data.website_url,
-    // Saturday: data.Saturday,
-    // Sunday: data.Sunday,
-    // Monday: data.Monday,
-    // Tuesday: data.Tuesday,
-    // Wednesday: data.Wednesday,
-    // Thursday: data.Thursday,
-    // Friday: data.Friday,
+    child_ability_per_day: data.child_ability_per_day,
+    child_price: data.child_price,
+    close_at: data.close_at,
+    location: data.location,
+    // num_of_ratings: data.num_of_ratings,
+    open_at: data.open_at,
+    website_url: data.website_url,
+
     // city_id: data.city_id,
   };
+  const initial = [
+    data.available_days.Saturday,
+    data.available_days.Sunday,
+    data.available_days.Monday,
+    data.available_days.Tuesday,
+    data.available_days.Wednesday,
+    data.available_days.Thursday,
+    data.available_days.Friday,
+  ];
+
   const days = [];
   days["Saturday"] = checked[0];
   days["Sunday"] = checked[1];
@@ -67,7 +71,6 @@ const EditAttraction = () => {
             ...days,
           }
         );
-        console.log(data);
         if (response.status === 200) {
           navigate("/dash/showAttraction", { state: { id: data.id } });
         } else {
@@ -79,6 +82,8 @@ const EditAttraction = () => {
           "http://127.0.0.1:8000/api/attraction/editAttractionDetails",
           {
             ...values,
+            id: data.id,
+            ...days,
           },
           {
             headers: {
@@ -107,7 +112,7 @@ const EditAttraction = () => {
     <Box m="40px auto" width="70%">
       <Header title="Edit Attraction" />
       <BackButtom />
-      <AvailableDays setChecked={setChecked} />
+      <AvailableDays setChecked={setChecked} initial={initial} />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -142,7 +147,7 @@ const EditAttraction = () => {
                 helperText={touched.name && errors.name}
                 sx={{ gridColumn: "span 2" }}
               />
-              {/* <TextField
+              <TextField
                 fullWidth
                 variant="filled"
                 type="text"
@@ -179,6 +184,19 @@ const EditAttraction = () => {
                 name="website_url"
                 error={!!touched.website_url && !!errors.website_url}
                 helperText={touched.website_url && errors.website_url}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="details"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.details}
+                name="details"
+                error={!!touched.details && !!errors.details}
+                helperText={touched.details && errors.details}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -257,6 +275,7 @@ const EditAttraction = () => {
                 helperText={touched.child_price && errors.child_price}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -282,7 +301,7 @@ const EditAttraction = () => {
                 error={!!touched.close_at && !!errors.close_at}
                 helperText={touched.close_at && errors.close_at}
                 sx={{ gridColumn: "span 2" }}
-              /> */}
+              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">

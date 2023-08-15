@@ -9,7 +9,6 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
 import GetCity from "../../components/getCity";
-import InputDaysTrip from "../../components/InputDaysTrip";
 
 const AddHotel = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");

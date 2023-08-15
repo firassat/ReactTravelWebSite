@@ -5,16 +5,29 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
-
+import AvailableDays from "../../components/AvailableDays";
 import { useNavigate } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
+import GetCity from "../../components/getCity";
 
 const AddAttraction = () => {
+  const [checked, setChecked] = useState(0);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
   const [send, setsend] = useState(0);
   const navigate = useNavigate();
+  const [city, setCity] = useState(0);
+  const [Country, setCountry] = useState(0);
   const token = localStorage.getItem("_auth");
+  const initial = [0, 0, 0, 0, 0, 0, 0];
+  const days = [];
+  days["Saturday"] = checked[0];
+  days["Sunday"] = checked[1];
+  days["Monday"] = checked[2];
+  days["Tuesday"] = checked[3];
+  days["Wednesday"] = checked[4];
+  days["Thursday"] = checked[5];
+  days["Friday"] = checked[6];
 
   const handleFormSubmit = async (values) => {
     try {
@@ -22,6 +35,9 @@ const AddAttraction = () => {
         "http://127.0.0.1:8000/api/attraction/addAttractionCompany",
         {
           ...values,
+          ...values,
+          ...days,
+          city_id: city,
         },
         {
           headers: {
@@ -48,6 +64,7 @@ const AddAttraction = () => {
     <Box m="40px auto" width="70%">
       <Header title="Add Attraction" />
       <BackButtom />
+      <AvailableDays setChecked={setChecked} initial={initial} />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -70,6 +87,7 @@ const AddAttraction = () => {
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
+              <GetCity setCity={setCity} setCountry={setCountry} />
               <TextField
                 variant="filled"
                 type="text"
@@ -178,19 +196,7 @@ const AddAttraction = () => {
                 helperText={touched.adult_price && errors.adult_price}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="available_days"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.available_days}
-                name="available_days"
-                error={!!touched.available_days && !!errors.available_days}
-                helperText={touched.available_days && errors.available_days}
-                sx={{ gridColumn: "span 2" }}
-              />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -222,19 +228,7 @@ const AddAttraction = () => {
                 helperText={touched.child_price && errors.child_price}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="city_id"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.city_id}
-                name="city_id"
-                error={!!touched.city_id && !!errors.city_id}
-                helperText={touched.city_id && errors.city_id}
-                sx={{ gridColumn: "span 2" }}
-              />
+
               <TextField
                 fullWidth
                 variant="filled"
