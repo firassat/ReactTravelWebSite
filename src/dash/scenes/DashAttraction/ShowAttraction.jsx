@@ -363,17 +363,20 @@ function ShowAttraction() {
             gap: "20px",
           }}
         >
-          <Box
-            className="deletebutoomShow"
-            onClick={() => {
-              axios.get(
-                "http://127.0.0.1:8000/api/admin/deleteAttraction?id=" + data.id
-              );
-              navigate("/dash/company");
-            }}
-          >
-            Delete
-          </Box>
+          {mainAdmin ? (
+            <Box
+              className="deletebutoomShow"
+              onClick={() => {
+                axios.get(
+                  "http://127.0.0.1:8000/api/admin/deleteAttraction?id=" +
+                    data.id
+                );
+                navigate("/dash/company");
+              }}
+            >
+              Delete
+            </Box>
+          ) : null}
           <Box
             className="deletebutoomShow edit"
             backgroundColor="#9E9E9E"

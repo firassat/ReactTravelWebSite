@@ -84,10 +84,10 @@ function Nav() {
         });
     }
   };
-  console.log(data);
+
   useEffect(() => {
     getold();
-  }, []);
+  }, [data]);
 
   return (
     data.admin && (

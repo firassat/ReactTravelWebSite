@@ -10,6 +10,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import AddTripInput from "../../components/AddTripInput";
+import EditTrip from "./EditTrip";
+
 function TripDetails() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -18,8 +20,8 @@ function TripDetails() {
   const navigate = useNavigate();
   let [data, setdata] = useState([]);
   let [reload, setReload] = useState([]);
-  let [addScreen, setAddScreen] = useState([0, 0, 0]);
-
+  let [addScreen, setAddScreen] = useState([0, 0, 0, 0]);
+  const token = localStorage.getItem("_auth");
   let mainAdmin = localStorage.getItem("_auth_type") === "main_admin" ? 1 : 0;
   async function getUsers() {
     if (mainAdmin) {
@@ -118,7 +120,7 @@ function TripDetails() {
                           top: "25px",
                           right: "25px",
                         }}
-                        onClick={() => setAddScreen([!addScreen[0], 0, 0])}
+                        onClick={() => setAddScreen([!addScreen[0], 0, 0, 0])}
                       >
                         <CloseIcon />
                       </IconButton>
@@ -183,7 +185,7 @@ function TripDetails() {
                       bottom: "calc(50% - 1rem)",
                       left: "-20%",
                     }}
-                    onClick={() => setAddScreen([0, !addScreen[1], 0])}
+                    onClick={() => setAddScreen([0, !addScreen[1], 0, 0])}
                   >
                     <AddIcon />
                   </IconButton>
@@ -200,12 +202,13 @@ function TripDetails() {
                           top: "25px",
                           right: "25px",
                         }}
-                        onClick={() => setAddScreen([0, !addScreen[1], 0])}
+                        onClick={() => setAddScreen([0, 0, 0, 0])}
                       >
                         <CloseIcon />
                       </IconButton>
                       <AddTripInput
                         url={"http://127.0.0.1:8000/api/admin/addNewDate"}
+                        url2={"http://127.0.0.1:8000/api/trip/addNewDate"}
                         id={data.id}
                         setReload={setReload}
                         inputNumber={2}
@@ -236,7 +239,7 @@ function TripDetails() {
                       display="grid"
                       gridTemplateColumns="repeat(3, 30%)"
                       borderBottom={`1px solid ${colors.primary[800]}`}
-                      p="10px "
+                      p="15px !important"
                       gap="20px"
                       key={`${e.id}-${i}`}
                       position={"relative"}
@@ -283,7 +286,7 @@ function TripDetails() {
                       bottom: "calc(50% - 1rem)",
                       left: "-20%",
                     }}
-                    onClick={() => setAddScreen([0, 0, !addScreen[2]])}
+                    onClick={() => setAddScreen([0, 0, !addScreen[2], 0])}
                   >
                     <AddIcon />
                   </IconButton>
@@ -300,12 +303,13 @@ function TripDetails() {
                           top: "25px",
                           right: "25px",
                         }}
-                        onClick={() => setAddScreen([0, 0, !addScreen[2]])}
+                        onClick={() => setAddScreen([0, 0, 0, 0])}
                       >
                         <CloseIcon />
                       </IconButton>
                       <AddTripInput
                         url={"http://127.0.0.1:8000/api/admin/addNewOffer"}
+                        url2={"http://127.0.0.1:8000/api/trip/addNewOffer"}
                         id={data.id}
                         setReload={setReload}
                         inputNumber={2}
@@ -340,7 +344,7 @@ function TripDetails() {
                       display="grid"
                       gridTemplateColumns="repeat(3, 30%)"
                       borderBottom={`1px solid ${colors.primary[800]}`}
-                      p="10px "
+                      p="15px !important"
                       gap="20px"
                       key={`${e.id}-${i}`}
                       position={"relative"}
@@ -396,7 +400,7 @@ function TripDetails() {
                       display="grid"
                       gridTemplateColumns="repeat(3, 30%)"
                       borderBottom={`1px solid ${colors.primary[800]}`}
-                      p="10px "
+                      p="15px !important"
                       gap="20px"
                       key={`${e.id}-${i}`}
                     >
@@ -448,10 +452,26 @@ function TripDetails() {
           <Box
             className="deletebutoomShow"
             onClick={() => {
-              axios.get(
-                "http://127.0.0.1:8000/api/admin/deleteTheCompany?id=" + data.id
-              );
-              navigate("/dash/company");
+              if (mainAdmin) {
+                axios.get(
+                  "http://127.0.0.1:8000/api/trip/deleteSomeTrip?trip_id=" +
+                    data.id
+                );
+                navigate("/dash/company");
+              } else {
+                axios.get(
+                  "http://127.0.0.1:8000/api/trip/deleteSomeTrip?trip_id=" +
+                    data.id,
+                  {
+                    headers: {
+                      Accept: "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
+                navigate("/dashTrip");
+                setReload((p) => p + 1);
+              }
             }}
           >
             Delete
@@ -459,19 +479,34 @@ function TripDetails() {
           <Box
             className="deletebutoomShow edit"
             backgroundColor="#9E9E9E"
-            onClick={async () => {
-              if (location.state)
-                navigate("/dash/editTrip", {
-                  state: data,
-                });
-              else
-                navigate("/dashTrip/editTrip", {
-                  state: data,
-                });
+            onClick={() => {
+              setAddScreen([0, 0, 0, 1]);
             }}
           >
             Edit
           </Box>
+          {addScreen[3] ? (
+            <Box
+              className="sentSuccss"
+              sx={{ backgroundColor: colors.primary[400] }}
+            >
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: "25px",
+                  right: "25px",
+                }}
+                onClick={() => setAddScreen([0, 0, 0, 0])}
+              >
+                <CloseIcon />
+              </IconButton>
+              <EditTrip
+                id={data.id}
+                setReload={setReload}
+                setAddScreen={setAddScreen}
+              />
+            </Box>
+          ) : null}
         </Box>
       </Box>
     )

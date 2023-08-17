@@ -489,7 +489,7 @@ function ShowHotel() {
                     display="grid"
                     gridTemplateColumns="repeat(4, 20%)"
                     borderBottom={`1px solid ${colors.primary[800]}`}
-                    p="15px "
+                    p="15px !important"
                     gap="20px"
                     textAlign={"center"}
                     justifyContent={"center"}
@@ -504,7 +504,7 @@ function ShowHotel() {
                       display="grid"
                       gridTemplateColumns="repeat(4, 20%)"
                       borderBottom={`1px solid ${colors.primary[800]}`}
-                      p="15px "
+                      p="15px !important"
                       gap="20px"
                       key={`${e.id}-${i}`}
                       position={"relative"}

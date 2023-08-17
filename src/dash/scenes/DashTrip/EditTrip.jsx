@@ -1,85 +1,67 @@
-import React, { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Button, MenuItem, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import BackButtom from "../../components/BackButtom";
-import GetCity from "../../components/getCity";
 
-const EditTrip = () => {
+import GetCity from "../../components/getCity";
+import InputDaysTrip from "../../components/InputDaysTrip";
+
+const EditTrip = (props) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
-  const [send, setsend] = useState(0);
   const [city, setCity] = useState(0);
   const [Country, setCountry] = useState(0);
-  const location = useLocation();
-  const data = location.state;
-  const navigate = useNavigate();
-
-  const initialValues = {
-    name: data.name,
-    email: data.email,
-    phone_number: data.phone_number,
-    // country_id: data.country_id,
-  };
+  const [days_number, setdays_number] = useState(1);
+  // const [days_data, setdaysfata] = useState({});
+  // const [days_input, setdays_input] = useState(0);
+  const token = localStorage.getItem("_auth");
 
   const handleFormSubmit = async (values) => {
     try {
-      if (localStorage.getItem("_auth_type") === "main_admin") {
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/admin/editCompanyDetails",
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/trip/editTripDetails",
+        {
+          id: props.id,
+          ...values,
 
-          {
-            headers: {
-              Accept: "application/json",
-            },
-            ...values,
-            id: data.id,
-            country_id: Country,
-          }
-        );
-        if (response.status === 200) {
-          navigate("/dash/showTrip", { state: { id: data.id } });
-        } else {
-          throw await response;
-        }
-      } else {
-        const token = localStorage.getItem("_auth");
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/trip/editCompanyDetails",
-          {
-            ...values,
-            country_id: Country,
+          destination: city,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(values);
-        if (response.status === 200) {
-          setsend(1);
-          setTimeout(() => {
-            navigate("/dashTrip");
-          }, 5000);
-        } else {
-          throw await response;
         }
+      );
+
+      if (response.status === 200) {
+        props.setReload((prev) => prev + 1);
+        props.setAddScreen([0, 0, 0, 0]);
+      } else {
+        throw await response;
       }
     } catch (error) {
-      seterr(error);
+      seterr(error.response);
     }
   };
+  // const onSubmitDays = (e) => {
+  //   e.preventDefault();
+  //   for (let i = 1; i <= days_number; i++) {
+  //     days_data[`title_${i}`] = e.target[i - 1].value;
+  //     days_data[`details_${i}`] = e.target[i - 1].value;
+  //   }
+
+  //   setdays_input(0);
+  // };
+  // useEffect(() => {
+  //   setdays_input(days_number);
+  // }, [days_number]);
   return (
     <Box m="40px auto" width="70%">
-      <Header title="Edit Trip Company" />
-      <BackButtom />
+      <Header title="Edit Trip" />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -104,74 +86,30 @@ const EditTrip = () => {
               }}
             >
               <GetCity setCity={setCity} setCountry={setCountry} />
+              {setdays_number(values.days_number)}
               <TextField
                 variant="filled"
                 type="text"
-                label="Name"
+                label="description"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.name}
-                name="name"
-                error={!!touched.name && !!errors.name}
-                helperText={touched.name && errors.name}
+                value={values.description}
+                name="description"
+                error={!!touched.description && !!errors.description}
+                helperText={touched.description && errors.description}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Email"
+                label="details"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 2" }}
-              />
-
-              <TextField
-                fullWidth
-                variant="filled"
-                type="phone"
-                label="Phone Number"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.phone_number}
-                name="phone_number"
-                error={!!touched.phone_number && !!errors.phone_number}
-                helperText={touched.phone_number && errors.phone_number}
-                sx={{ gridColumn: "span 2" }}
-              />
-              {/*  <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="adult_ability_per_day"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.adult_ability_per_day}
-                name="adult_ability_per_day"
-                error={
-                  !!touched.adult_ability_per_day &&
-                  !!errors.adult_ability_per_day
-                }
-                helperText={
-                  touched.adult_ability_per_day && errors.adult_ability_per_day
-                }
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="adult_price"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.adult_price}
-                name="adult_price"
-                error={!!touched.adult_price && !!errors.adult_price}
-                helperText={touched.adult_price && errors.adult_price}
+                value={values.details}
+                name="details"
+                error={!!touched.details && !!errors.details}
+                helperText={touched.details && errors.details}
                 sx={{ gridColumn: "span 2" }}
               />
 
@@ -179,75 +117,52 @@ const EditTrip = () => {
                 fullWidth
                 variant="filled"
                 type="number"
-                label="child_ability_per_day"
+                label="start_age"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.child_ability_per_day}
-                name="child_ability_per_day"
-                error={
-                  !!touched.child_ability_per_day &&
-                  !!errors.child_ability_per_day
-                }
-                helperText={
-                  touched.child_ability_per_day && errors.child_ability_per_day
-                }
+                value={values.start_age}
+                name="start_age"
+                error={!!touched.start_age && !!errors.start_age}
+                helperText={touched.start_age && errors.start_age}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="number"
-                label="child_price"
+                label="end_age"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.child_price}
-                name="child_price"
-                error={!!touched.child_price && !!errors.child_price}
-                helperText={touched.child_price && errors.child_price}
+                value={values.end_age}
+                name="end_age"
+                error={!!touched.end_age && !!errors.end_age}
+                helperText={touched.end_age && errors.end_age}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="datetime-local"
-                label="open_at"
+                type="number"
+                label="max_persons"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.open_at}
-                name="open_at"
-                error={!!touched.open_at && !!errors.open_at}
-                helperText={touched.open_at && errors.open_at}
+                value={values.max_persons}
+                name="max_persons"
+                error={!!touched.max_persons && !!errors.max_persons}
+                helperText={touched.max_persons && errors.max_persons}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="datetime-local"
-                label="close_at"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.close_at}
-                name="close_at"
-                error={!!touched.close_at && !!errors.close_at}
-                helperText={touched.close_at && errors.close_at}
-                sx={{ gridColumn: "span 2" }}
-              /> */}
             </Box>
+
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Edit
+                Add
               </Button>
             </Box>
-            {send ? (
-              <Box className="sentSuccss">
-                <h2>Updates sent successfully, pending approval.</h2>
-              </Box>
-            ) : (
-              ""
-            )}
           </form>
         )}
       </Formik>
+      {err.data && <span style={{ color: "red" }}>{err.data.message}</span>}
     </Box>
   );
 };
@@ -268,5 +183,20 @@ const checkoutSchema = yup.object().shape({
   // wallet: yup.string().required(),
   // points: yup.string().required(),
 });
-
+const initialValues = {
+  // name: "",
+  // email: data.email,
+  // phone_number: data.phone_number,
+  // details: data.details,
+  // adult_ability_per_day: data.adult_ability_per_day,
+  // adult_price: data.adult_price,
+  // available_days: data.available_days,
+  // child_ability_per_day: data.child_ability_per_day,
+  // child_price: data.child_price,
+  // close_at: data.close_at,
+  // location: data.location,
+  // num_of_ratings: data.num_of_ratings,
+  // open_at: data.open_at,
+  // website_url: data.website_url,
+};
 export default EditTrip;

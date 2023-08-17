@@ -1,91 +1,89 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, MenuItem, TextField, useTheme } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, TextField, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
-import AvailableDays from "../../components/AvailableDays";
+import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
 import GetCity from "../../components/getCity";
 import { tokens } from "../../../theme";
-const AddAttraction = () => {
+
+const EditTrip = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [checked, setChecked] = useState(0);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
   const [send, setsend] = useState(0);
-  const navigate = useNavigate();
   const [city, setCity] = useState(0);
   const [Country, setCountry] = useState(0);
-  const [type, setType] = useState({});
-  const token = localStorage.getItem("_auth");
-  if (err.data) {
-    setTimeout(() => {
-      seterr({});
-    }, 5000);
-  }
-  const initial = [0, 0, 0, 0, 0, 0, 0];
-  const days = [];
-  days["Saturday"] = checked[0];
-  days["Sunday"] = checked[1];
-  days["Monday"] = checked[2];
-  days["Tuesday"] = checked[3];
-  days["Wednesday"] = checked[4];
-  days["Thursday"] = checked[5];
-  days["Friday"] = checked[6];
+  const location = useLocation();
+  const data = location.state;
+  const navigate = useNavigate();
+
+  const initialValues = {
+    name: data.name,
+    email: data.email,
+    phone_number: data.phone_number,
+    // country_id: data.country_id,
+  };
 
   const handleFormSubmit = async (values) => {
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/attraction/addAttractionCompany",
-        {
-          ...values,
-          ...values,
-          ...days,
-          city_id: city,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      if (localStorage.getItem("_auth_type") === "main_admin") {
+        const response = await axios.post(
+          "http://127.0.0.1:8000/api/admin/editCompanyDetails",
+
+          {
+            headers: {
+              Accept: "application/json",
+            },
+            ...values,
+            id: data.id,
+            country_id: Country,
+          }
+        );
+        if (response.status === 200) {
+          navigate("/dash/showTrip", { state: { id: data.id } });
+        } else {
+          throw await response;
         }
-      );
-      if (response.status === 200) {
-        setsend(1);
-        setTimeout(() => {
-          navigate("/dashAttraction");
-        }, 5000);
       } else {
-        throw await response;
+        const token = localStorage.getItem("_auth");
+        const response = await axios.post(
+          "http://127.0.0.1:8000/api/trip/editCompanyDetails",
+          {
+            ...values,
+            country_id: Country,
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(values);
+        if (response.status === 200) {
+          setsend(1);
+          setTimeout(() => {
+            navigate("/dashTrip");
+          }, 5000);
+        } else {
+          throw await response;
+        }
       }
     } catch (error) {
       seterr(error.response);
     }
   };
-  const getType = async () => {
-    const response = await axios
-      .get("http://127.0.0.1:8000/api/attraction/getAttractionTypes", {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => res.data)
-      .then((res) => setType(res.data));
-  };
-  useEffect(() => {
-    getType();
-  }, []);
-  console.log(type);
   return (
     <Box m="40px auto" width="70%">
-      <Header title="Add Attraction" />
+      <Header title="Edit Trip Company" />
       <BackButtom />
-      <AvailableDays setChecked={setChecked} initial={initial} />
+
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -134,59 +132,7 @@ const AddAttraction = () => {
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                sx={{ gridColumn: "span 2" }}
-                select
-                label="type"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.stars}
-                name="attraction_type_id"
-              >
-                {type[0] &&
-                  type.map((e) => {
-                    return <MenuItem value={e.id}>{e.type}</MenuItem>;
-                  })}
-              </TextField>
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="location"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.location}
-                name="location"
-                error={!!touched.location && !!errors.location}
-                helperText={touched.location && errors.location}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="website_url"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.website_url}
-                name="website_url"
-                error={!!touched.website_url && !!errors.website_url}
-                helperText={touched.website_url && errors.website_url}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="details"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.details}
-                name="details"
-                error={!!touched.details && !!errors.details}
-                helperText={touched.details && errors.details}
-                sx={{ gridColumn: "span 2" }}
-              />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -200,7 +146,7 @@ const AddAttraction = () => {
                 helperText={touched.phone_number && errors.phone_number}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
+              {/*  <TextField
                 fullWidth
                 variant="filled"
                 type="number"
@@ -263,7 +209,6 @@ const AddAttraction = () => {
                 helperText={touched.child_price && errors.child_price}
                 sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
                 fullWidth
                 variant="filled"
@@ -289,25 +234,25 @@ const AddAttraction = () => {
                 error={!!touched.close_at && !!errors.close_at}
                 helperText={touched.close_at && errors.close_at}
                 sx={{ gridColumn: "span 2" }}
-              />
+              /> */}
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Add
+                Edit
               </Button>
-              {send ? (
-                <Box
-                  className="sentSuccss"
-                  sx={{
-                    backgroundColor: `${colors.primary[400]} !important `,
-                  }}
-                >
-                  <h2>Updates sent successfully, pending approval.</h2>
-                </Box>
-              ) : (
-                ""
-              )}
             </Box>
+            {send ? (
+              <Box
+                className="sentSuccss"
+                sx={{
+                  backgroundColor: `${colors.primary[400]} !important `,
+                }}
+              >
+                <h2>Updates sent successfully, pending approval.</h2>
+              </Box>
+            ) : (
+              ""
+            )}
           </form>
         )}
       </Formik>
@@ -332,20 +277,5 @@ const checkoutSchema = yup.object().shape({
   // wallet: yup.string().required(),
   // points: yup.string().required(),
 });
-const initialValues = {
-  // name: "",
-  // email: data.email,
-  // phone_number: data.phone_number,
-  // details: data.details,
-  // adult_ability_per_day: data.adult_ability_per_day,
-  // adult_price: data.adult_price,
-  // available_days: data.available_days,
-  // child_ability_per_day: data.child_ability_per_day,
-  // child_price: data.child_price,
-  // close_at: data.close_at,
-  // location: data.location,
-  // num_of_ratings: data.num_of_ratings,
-  // open_at: data.open_at,
-  // website_url: data.website_url,
-};
-export default AddAttraction;
+
+export default EditTrip;

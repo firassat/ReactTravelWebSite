@@ -19,7 +19,7 @@ export { default as EditAttraction } from "./DashAttraction/EditAttravtion.jsx";
 export { default as AddAttraction } from "./DashAttraction/AddAttraction.jsx";
 export { default as ReservationsAtt } from "./DashAttraction/ReservationsAtt";
 export { default as ShowTrip } from "./DashTrip/ShowTrip";
-export { default as EditTrip } from "./DashTrip/EditTrip";
+export { default as EditTrip } from "./DashTrip/EditTripCompany";
 export { default as AddTrip } from "./DashTrip/AddTrip";
 export { default as AddTripCompany } from "./DashTrip/AddTripCompany";
 export { default as ReservationsTrip } from "./DashTrip/ReservationsTrip";

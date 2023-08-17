@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -9,15 +9,20 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
 import GetCity from "../../components/getCity";
-import InputDaysTrip from "../../components/InputDaysTrip";
-
+import { tokens } from "../../../theme";
 const AddTripCompany = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
   const [send, setsend] = useState(0);
   const [cuntry, setCountry] = useState(0);
   const [city, setCity] = useState(0);
-
+  if (err.data) {
+    setTimeout(() => {
+      seterr({});
+    }, 5000);
+  }
   const navigate = useNavigate();
   const token = localStorage.getItem("_auth");
 
@@ -46,7 +51,8 @@ const AddTripCompany = () => {
         throw await response;
       }
     } catch (error) {
-      seterr(error);
+      seterr(error.response);
+      console.log(error);
     }
   };
 
@@ -124,7 +130,12 @@ const AddTripCompany = () => {
                 Add
               </Button>
               {send ? (
-                <Box className="sentSuccss" textAlign={"center"}>
+                <Box
+                  className="sentSuccss"
+                  sx={{
+                    backgroundColor: `${colors.primary[400]} !important `,
+                  }}
+                >
                   <h2>Updates sent successfully, pending approval</h2>
                 </Box>
               ) : (
@@ -134,6 +145,7 @@ const AddTripCompany = () => {
           </form>
         )}
       </Formik>
+      {err.data && <span style={{ color: "red" }}>{err.data.message}</span>}
     </Box>
   );
 };

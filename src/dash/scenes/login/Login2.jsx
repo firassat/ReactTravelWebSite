@@ -5,7 +5,6 @@ import Logo from "../../../assets/logo.png";
 import { useSignIn } from "react-auth-kit";
 import axios from "axios";
 
-
 const Login2 = () => {
   let [err, seterr] = useState({});
   if (err.data) {

@@ -44,7 +44,7 @@ const AddTrip = (props) => {
         throw await response;
       }
     } catch (error) {
-      seterr(error);
+      seterr(error.response);
     }
   };
   const onSubmitDays = (e) => {
@@ -182,6 +182,7 @@ const AddTrip = (props) => {
           </form>
         )}
       </Formik>
+      {err.data && <span style={{ color: "red" }}>{err.data.message}</span>}
     </Box>
   );
 };

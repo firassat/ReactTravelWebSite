@@ -2,6 +2,8 @@ import axios from "axios";
 import React from "react";
 
 function AddInput(props) {
+  const token = localStorage.getItem("_auth");
+  let mainAdmin = localStorage.getItem("_auth_type") === "main_admin" ? 1 : 0;
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const inputData = {};
@@ -10,11 +12,12 @@ function AddInput(props) {
     }
     try {
       const response = await axios.post(
-        props.url,
+        mainAdmin ? props.url : props.url2,
         { ...inputData, trip_id: props.id },
         {
           headers: {
             Accept: "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

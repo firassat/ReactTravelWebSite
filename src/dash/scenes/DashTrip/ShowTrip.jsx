@@ -206,7 +206,7 @@ function ShowTrip() {
                             display="grid"
                             gridTemplateColumns="repeat(7, 10%)"
                             borderBottom={`1px solid ${colors.primary[800]}`}
-                            p="10px "
+                            p="15px !important"
                             gap="20px"
                           >
                             <Box color={colors.greenAccent[500]}>
@@ -233,16 +233,15 @@ function ShowTrip() {
                             </Box>
                           </Box>
                         </Link>
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            bottom: "calc(50% - 1rem)",
-                            left: "-120px",
-                            color: "brown",
-                            zIndex: "2",
-                          }}
-                        >
+
+                        {!mainAdmin ? (
                           <IconButton
+                            sx={{
+                              position: "absolute",
+                              bottom: "calc(50% - 1rem)",
+                              left: "-25px",
+                              color: "brown",
+                            }}
                             onClick={() => {
                               deleteInput(
                                 "http://127.0.0.1:8000/api/trip/deleteSomeTrip?trip_id=",
@@ -252,22 +251,7 @@ function ShowTrip() {
                           >
                             <DeleteIcon />
                           </IconButton>
-                          <IconButton
-                            style={{ fontSize: "10px" }}
-                            onClick={() => {
-                              navigate(
-                                `/${
-                                  mainAdmin ? "dash" : "dashTrip"
-                                }/reservationsTrip`,
-                                {
-                                  state: { id: e.id },
-                                }
-                              );
-                            }}
-                          >
-                            Reservations
-                          </IconButton>
-                        </Box>
+                        ) : null}
                       </Box>
                     ))}
                     <Pagination
@@ -294,10 +278,22 @@ function ShowTrip() {
           <Box
             className="deletebutoomShow"
             onClick={() => {
-              axios.get(
-                "http://127.0.0.1:8000/api/admin/deleteTheCompany?id=" + data.id
-              );
-              navigate("/dash/company");
+              if (mainAdmin) {
+                axios.get(
+                  "http://127.0.0.1:8000/api/admin/deleteTheCompany?id=" +
+                    data.id
+                );
+                navigate("/dash/company");
+              } else {
+                axios.get("http://127.0.0.1:8000/api/trip/deleteTheCompany", {
+                  headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                });
+                navigate("/dashTrip");
+                setReload((p) => p + 1);
+              }
             }}
           >
             Delete

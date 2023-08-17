@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-
+import Brightness1Icon from "@mui/icons-material/Brightness1";
 import { tokens } from "../../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -118,6 +118,32 @@ const SidebarTrip = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Reservations"
+              to="/dashTrip/reservationsTrip"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Box
+              color={"brown"}
+              px={"15px"}
+              position="absolute"
+              right="42px"
+              bottom="18px"
+              alignItems={"center"}
+              display={"flex"}
+            >
+              {1 ? (
+                <Brightness1Icon
+                  sx={{
+                    fontSize: "13px !important",
+                  }}
+                />
+              ) : (
+                ""
+              )}
+            </Box>
           </Box>
         </Menu>
       </Sidebar>
