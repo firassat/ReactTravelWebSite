@@ -1,0 +1,19 @@
+.css-1xhypcz-MuiStack-root>.MuiTextField-root {
+margin-left: -1px;
+border: none;
+outline: none;
+}
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root .css-i4bv87-MuiSvgIcon-root {
+    color:var(--main-color);
+}
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}
+.css-1xhypcz-MuiStack-root>.MuiTextField-root {
+min-width: 150px !important;}
+.css-1xhypcz-MuiStack-root {
+    /* padding-top: 0px!important; */
+    justify-content: center;
+    align-items: center;
+}

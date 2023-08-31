@@ -1,0 +1,33 @@
+.heading {
+    position: relative;
+}
+.heading h3 {
+    margin-top: 50px;
+    font-size: 35px;
+}
+.heading div {
+    /* margin-top: 10px; */
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+.rate-reviwes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 17px;
+    width: fit-content;
+}
+
+.hoteltype {
+    padding: 5px 8px;
+    background-color: rgb(15 102 202);
+    color: #fff;
+    width: fit-content;
+}
+.email_phone {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    width: 500px;
+}

@@ -1,0 +1,239 @@
+.attractionserachresult .searchresultcard {
+    /* background: linear-gradient(45deg, #7affff, #ffb5b5); */
+    background-color: aliceblue;
+}
+.searchresultcard {
+    margin:20px auto;
+}
+.searchresultcard  {
+    display: grid;
+    position: relative;
+    display: grid;
+    grid-gap: 1.5em;
+    grid-template-columns: 16rem  auto;
+    /* grid-template-areas:"header ali"; */
+    background-color: white;
+    border-radius: 20px;
+}
+@media (max-width: 768px) {
+    .searchresultcard {
+        grid-template-columns: 1fr;
+    }
+}
+.hotel-searchresultcard .searchresultcard{
+    grid-template-columns: 16rem 150px auto;
+}
+.hotelstars {
+    position: absolute;
+    top: 20px;
+    right: 6px;
+    color: white;
+    /* background-color: #003b95; */
+    background-color: #1953aa;
+    padding: 5px 8px;
+}
+.searchresultcard div:nth-child(1) {
+    position: relative;
+    height: 100%;
+    border-radius: 20px 0 0 20px;
+}
+.searchresultcard  div:nth-child(1) img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px 0 0 20px;
+    /* grid-area: header; */
+}
+.searchresultcard  div:nth-child(1) span {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
+div.hotelviewdealbutton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.searchresultcard  .description {
+    margin: 15px 0;
+    position: relative;
+}
+.searchresultcard .description a {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--main-color);
+    color: white;
+    padding: 10px;
+}
+.attractionviewdealbutton {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--main-color);
+    color: white;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+button.hotelviewdealbutton {
+    background-color: #006ce4;;
+    padding: 5px 10px;
+    color: white;
+    position: relative;
+    /* animation: bluring 3.5s 10s infinite ; */
+    /* filter: blur(8px);
+    -webkit-filter: blur(0.5px);
+    filter: ; */
+    
+}
+button.hotelviewdealbutton::before {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.207);
+    width: 0;
+    height: 100%;
+    animation: bluring 3.5s infinite ;
+    
+}
+@keyframes bluring {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.flight {
+    background-color: #efefef;
+    margin-top: 15px;
+    
+}
+.flight .container {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.flight .container .flightcard {
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
+    padding: 20px;
+    background-color: white;
+    margin: 20px 120px;
+    box-shadow: 0px 0px 1px;
+    position: relative;
+}
+.flight .container .flightcard .flightdet {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+.flight .container .flightcard .price {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 23px;
+    font-weight: 600;
+}
+.flight .container .flightcard button {
+    background-color: var(--main-color);
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+}
+.flight .container .airlinepic {
+    margin-bottom: 16px;
+}
+.flight .container .airlinepic img {
+    width: 60px;
+    height: 60px;
+}
+.flight .container .flightcard .flightdet div:nth-child(3) p:nth-child(1) {
+    font-size: 20px;
+    font-weight: 600;
+} 
+.flight .container .flightcard .flightdet div:nth-child(3) p:nth-child(2) {
+    margin-top: -15px;
+    color: rgb(51 234 76);
+    font-weight: 600;
+}
+.inside {
+    display: grid;
+    grid-template-columns: 300px auto;
+    gap: 20px;
+    margin-top: 30px;
+    background-color: #f7f7f7;
+}
+.inside h5 {
+    border-bottom: 2px solid rgb(31, 28, 28);
+    padding-bottom: 10px;
+}
+.inside .check label {
+    width: 200px;
+}
+.second {
+    background-color: #f7f7f7;
+}
+
+.flight .container .showdeal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+.flight .container .showinside{
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 4px;
+    width: 80%;
+    max-width: 1000px;
+    position: absolute;
+    bottom: 20px;
+}
+.flight .container .crossbutton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.detailsofflight {
+    width: 70%;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+.insidedetailsofflight  {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bookflight {
+    position: absolute;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--main-color);
+    bottom: 20px;
+    right: 30px;
+    color: #ffffff;
+}

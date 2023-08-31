@@ -1,18 +1,23 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./font/stylesheet.css";
-import MainNavbar from "./components/navbar/Main-navbar";
-import Head from "./components/header/Header";
-import Home from "./pages/Home/home";
-import Hotel from "./pages/Hotels/hotel";
-import Flight from "./pages/Flights/flight";
-import Trip from "./pages/Trips/trip";
-import Attraction from "./pages/Attractions/Attraction";
-import Login from "./pages/Login/Login.jsx";
-import Register from "./pages/Login/Register";
-import Reservation from "./pages/Reservation/Reservation.jsx";
-// import SeR from "./components/tenm/SearchResult";
-
+import "./App.css";
+import MainNavbar from "./website/components/navbar/Main-navbar";
+import Home from "./website/pages/Home/home";
+import Hotel from "./website/pages/Hotels/hotel";
+import Flight from "./website/pages/Flights/flight";
+import Trip from "./website/pages/Trips/trip";
+import Attraction from "./website/pages/Attractions/Attraction";
+import Login from "./website/pages/Login/Login.jsx";
+import Register from "./website/pages/Login/Register";
+import Forgetpassword from "./website/pages/Login/Forgetpassword";
+import Resetpassword from "./website/pages/Login/resetpassword";
+import Reservation from "./website/pages/Reservation/Reservation.jsx";
+import SearchResult from "./website/pages/Searchresult/SearchResult";
+import Details from "./website/pages/Details/Details";
+import VerifyEmail from "./website/pages/Login/verifyeamil";
+import Profile from "./website/components/profile/profile";
+import "./App.css";
 //dashborad
 import { Box } from "@mui/material";
 import { useState } from "react";
@@ -28,6 +33,7 @@ import {
   SidebarMain,
   SidebarAtt,
   SidebarTrip,
+  SidebarHotel,
   UserForm,
   EditForm,
   Calendar,
@@ -42,13 +48,15 @@ import {
   AddTrip,
   AddTripCompany,
   ShowHotel,
+  ShowRoom,
   AddHotel,
+  ReservationsHotel,
   ReservationsTrip,
   TripDetails,
   Nav,
   AddCity,
+  ShowFlight,
 } from "./dash/scenes/index.js";
-import "./App.css";
 
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 // import TT from "./components/take it/take";
@@ -82,6 +90,12 @@ const App = () => {
     }
     return children;
   };
+  const ProtectedRouteFlightAdmin = ({ children }) => {
+    if (localStorage.getItem("_auth_type") !== "flight_admin") {
+      return <Navigate to="/dash/login" />;
+    }
+    return children;
+  };
 
   return (
     <AuthProvider
@@ -100,26 +114,25 @@ const App = () => {
               <>
                 <MainNavbar />
                 <Routes>
-                  <Route path="" element={<Home />}></Route>
+                  <Route path="/" element={<Home />}></Route>
+                  <Route exact path="" element={<Home />}></Route>
                   <Route path="hotels" element={<Hotel />}></Route>
                   <Route path="flights" element={<Flight />}></Route>
-                  <Route path="trips" element={<Trip />}></Route>
-                  <Route path="attractions" element={<Attraction />}></Route>
-                  <Route path="aaaa" element={<Head name="trips" />}></Route>
-                  {/* <Route path="searchresult" element={<SeR />}></Route>  */}
+                  <Route exact path="trips" element={<Trip />}></Route>
+                  <Route
+                    exact
+                    path="attractions"
+                    element={<Attraction />}
+                  ></Route>
+                  <Route path="searchresult" element={<SearchResult />}></Route>
                   <Route path="login" element={<Login />} />
                   <Route path="register" element={<Register />} />
-
-                  {/*  <Route exact path="/ss" element={<TT />} /> 
-                //  <Route
-                //   path="/search"
-                //   element={
-                //     <SearchResults
-                //       searchQuery={new URLSearchParams(window.location.search).get("q")}
-                //     />
-                //   }
-                // />*/}
+                  <Route path="profile" element={<Profile />} />
+                  <Route path="forgetpassword" element={<Forgetpassword />} />
                   <Route path="reservation" element={<Reservation />} />
+                  <Route path="details" element={<Details />} />
+                  <Route path="resetpassword" element={<Resetpassword />} />
+                  <Route path="verifyemail" element={<VerifyEmail />} />
                 </Routes>
               </>
             }
@@ -172,6 +185,10 @@ const App = () => {
                               <Route
                                 path="/showHotel"
                                 element={<ShowHotel />}
+                              />
+                              <Route
+                                path="/showFlight"
+                                element={<ShowFlight />}
                               />
                               <Route path="/addHotel" element={<AddHotel />} />
                               <Route path="/nav" element={<Nav />} />
@@ -278,7 +295,7 @@ const App = () => {
                       <div className="app">
                         <TopbarSec setIsSidebar={setIsSidebar} />
                         <main className="content" style={{ display: "flex" }}>
-                          {isSidebar && <SidebarTrip isSidebar={isSidebar} />}
+                          {isSidebar && <SidebarHotel isSidebar={isSidebar} />}
                           <Box flexGrow={1}>
                             <Routes>
                               <Route path="" element={<ShowHotel />} />
@@ -296,6 +313,11 @@ const App = () => {
                                 path="/tripDetails"
                                 element={<TripDetails />}
                               />
+                              <Route path="/showRoom" element={<ShowRoom />} />
+                              <Route
+                                path="/reservationsHotel"
+                                element={<ReservationsHotel />}
+                              />
                             </Routes>
                           </Box>
                         </main>
@@ -304,6 +326,34 @@ const App = () => {
                   </ColorModeContext.Provider>
                 </RequireAuth>
               </ProtectedRouteHotelAdmin>
+            }
+          ></Route>
+          {/* FlightDashboard */}
+          <Route
+            exact
+            path="dashFlight/*"
+            element={
+              <ProtectedRouteFlightAdmin>
+                <RequireAuth loginPath={"/dash/login"}>
+                  <ColorModeContext.Provider value={colorMode}>
+                    <ThemeProvider theme={theme}>
+                      <CssBaseline />
+                      <div className="app">
+                        <TopbarSec setIsSidebar={setIsSidebar} />
+                        <main className="content" style={{ display: "flex" }}>
+                          {isSidebar && <SidebarHotel isSidebar={isSidebar} />}
+                          <Box flexGrow={1}>
+                            <Routes>
+                              <Route path="" element={<ShowHotel />} />
+                              <Route path="/addHotel" element={<AddHotel />} />
+                            </Routes>
+                          </Box>
+                        </main>
+                      </div>
+                    </ThemeProvider>
+                  </ColorModeContext.Provider>
+                </RequireAuth>
+              </ProtectedRouteFlightAdmin>
             }
           ></Route>
         </Routes>

@@ -1,0 +1,22 @@
+.carousel.carousel-slider .control-arrow , .carousel.carousel-slider .control-arrow:hover{
+  background-color: #0000004d;
+}
+.carousel .carousel-status {
+  font-size: 14px;
+}
+.carousel .slider-wrapper.axis-horizontal .slider .slide {
+  height: 70vh;
+}
+.carousel .slide img {
+  height: 100%;
+}
+.rounded .carousel.carousel-slider {
+  border-radius: 20px;
+}
+.rounded-small  {
+  height: 480px;
+}
+.rounded-small .carousel.carousel-slider {
+  height: 83%;
+  border-radius: 10px;
+}

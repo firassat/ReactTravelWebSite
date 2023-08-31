@@ -1,0 +1,56 @@
+.comments h3 {
+    width: fit-content;
+    border-bottom: 2px solid black;
+    font-weight: 600;
+    margin-top: 40px;
+}
+
+.personname {
+    font-size: 20px;
+
+}
+.personcomment {
+    margin-top: 15px;
+}
+hr {
+    width: 250px;
+}
+.addcomment {
+    width: 340px;
+    position: relative;
+}
+.container .addcomment img {
+    height: 350px;
+}
+.sendreviewbutton {
+    padding: 10px;
+    background-color: var(--main-color);
+    border: 2px solid ;
+    color:white;
+    border-radius: 10px;
+    /* position: absolute; */
+    right: 3px;
+    margin: 5px 0;
+}
+.addcomment input {
+    padding: 10px 15px;
+    border: 1px solid rgb(55, 47, 47);
+}
+.comment_addcomment {
+    margin:30px auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.user_comments_name {
+    color: white;
+    padding: 8px;
+    width : 40px;
+    height: 40px;
+    border-radius:50%;
+}
+.comment_pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}

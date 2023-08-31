@@ -1,6 +1,6 @@
 .dashCompanyItem {
   display: flex;
-  gap: 30px;
+  gap: 60px;
   justify-content: center;
   padding: 20px;
   transition: 0.5s;

@@ -1,0 +1,71 @@
+.room {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.roomdetails {
+  display : flex;
+  justify-content: space-between;
+  width: 70%;
+  position: fixed;
+  padding: 20px ;
+  background: #fff;
+  /* height: 80vh; */
+  z-index: 1;
+  border-radius: 15px;
+}
+@media (max-width: 1000px) {
+  .roomdetails {
+    flex-direction: column;
+    height: 70vh;
+    overflow: auto;
+  }
+  
+}
+.roomdetails .subtitleofroom {
+  margin:10px 10px 20px 35px;
+}
+.roomtype {
+  padding: 5px 8px;
+  background-color: #10d86b;
+  color: #fff;
+  width: fit-content;
+}
+.roomfeatures {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+.bookroom {
+  position: absolute;
+  right: 50px;
+  bottom: 20px;
+  padding: 10px;
+  background-color: rgb(15 102 202);
+  color: white;
+  animation: shadowing 2s infinite alternate;
+}
+@keyframes shadowing {
+  100% {
+      box-shadow: 0 0 30px rgb(255, 0, 0);
+  }
+}
+.css-1wvnaxz-MuiTableCell-root.MuiTableCell-head {
+  background-color: rgb(16 63 116) !important;
+}
+.css-1nslmh4-MuiTableCell-root.MuiTableCell-head {
+  background-color: rgb(16 63 116) !important;
+}
+.room_type_name {
+  color: rgb(15,102,202);
+  font-size: 16px;
+  font-weight: 600;
+}

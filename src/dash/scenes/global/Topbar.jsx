@@ -4,7 +4,6 @@ import { ColorModeContext, tokens } from "../../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
@@ -73,7 +72,7 @@ const Topbar = (props) => {
       alignItems={"center"}
     >
       {/* logo */}
-      <Box>
+      <Box marginLeft={"10px"}>
         {theme.palette.mode === "dark" ? (
           <img height={"80px"} alt="logo" src={require("./logo2.png")} />
         ) : (
@@ -90,6 +89,7 @@ const Topbar = (props) => {
             width: 0,
           },
         }}
+        marginRight={"35px"}
       >
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
@@ -193,9 +193,9 @@ const Topbar = (props) => {
             )}
           </Box>
         )}
-        <IconButton>
+        {/* <IconButton>
           <SettingsOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton sx={{ fontSize: "15px" }} onClick={() => signOut()}>
           Sign Out
         </IconButton>

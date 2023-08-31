@@ -1,0 +1,56 @@
+.home-header {
+  background-image: url("../../../assets/adobestock-274341667.jpeg");
+  background-size: cover;
+  height: 95vh;
+  position: relative;
+  top: -366px;
+  z-index: -1;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.header {
+  width: 100%;
+  height: 80vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* top: -233px; */
+  position: relative;
+}
+.hotel-header {
+  background-image: url("../../../assets/home-tab3-hero-1367x520-prog.jpg");
+}
+.flight-header {
+  background-image: url("../../../assets/pexels-hong-son-5071155.jpg");
+}
+.attraction-header {
+  background-image: url("../../../assets/caption.jpg");
+}
+.trip-header video {
+  object-fit: cover;
+  width: 100%;
+  height: 80vh;
+}
+.form {
+  width: 90%;
+  position: absolute;
+}
+.form p {
+  font-size: 50px;
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.trip-header p {
+  text-align: left;
+}
+.trip-header p span {
+  text-decoration: underline solid 3px aqua;
+}
+.homepage-searchbar {
+  width: 60%;
+  position: absolute;
+  left: 50%;
+  bottom: 40%;
+  transform: translate(-50%, -50%);
+}

@@ -1,0 +1,240 @@
+.poster {
+    background-color: #f7f7f7;
+}
+.poster .container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    flex-wrap: wrap;
+    position: relative;
+}
+.poster .container div {
+    height: 400px;
+    color:beige;
+}
+.poster .container div:nth-child(1) {
+    background-color: #006ce4;
+    border-radius: 40%;
+    padding: 10px;
+    overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.poster .container div:nth-child(1) div h3 {
+    background-image: linear-gradient(
+    -225deg,
+    white 0%,
+    #141961 50%,
+    #fc4552 100%
+    );
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 4s linear infinite;
+    display: inline-block;
+}
+@keyframes textclip {
+    to {
+    background-position: 300% center;
+    }
+}
+.poster .container div:nth-child(1) div ul {
+    display: inline-block;
+    height: 50px;
+    overflow: hidden;
+    font-size: 28px;
+    padding: 0;
+}
+@media (max-width: 540px) {
+    .poster .container div:nth-child(1) div ul{
+        font-size: 22px;
+    }
+}
+.poster .container div:nth-child(1) div ul li {
+    height: 45px;
+    text-align: center;
+    animation-duration: 16s;
+    animation-iteration-count: infinite;
+    animation-name: top-down;
+} 
+.poster .container div img {
+    width: 100%;
+    height: 100%;
+} 
+.poster .container div:nth-child(1) div ul li span {
+    text-decoration: underline 3px solid #ff5733;
+}
+@keyframes top-down {
+    0%{
+        transform: translateY(0px);
+    }
+    14%{
+        transform: translateY(-45px);
+    }
+    30%{
+        transform: translateY(-90px);
+    }
+    44%{
+        transform: translateY(-135px);
+    }
+    58%{
+        transform: translateY(-180px);
+    }
+    72%{
+        transform: translateY(-225px);
+    }
+    86% {
+        transform: translateY(-270px);
+    }
+    100%{
+        transform: translateY(-315px);
+    }
+    
+}
+.trip {
+    background-image: url("../../../assets/pexels-vincent-gerbouin-1174732.jpg");
+    height: 65vh;
+    background-position: bottom;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 785px){
+    .trip {
+        display: none;
+    }
+} 
+.trip .container{
+    background-color: rgba(98,89,89,0.4);
+    width: 80%;
+    height: 80%;
+    box-shadow: 0px 0px 20px white;
+}
+.trip .container div {
+    color: white;
+}
+.trip .container div p:nth-child(1) {
+    font-family: "Brush Script MT",cursive;
+    font-size: 50px;
+}
+.trip .container div p {
+    font-size: 25px;
+    margin: 20px 0px;
+    transition-duration: 1s;
+}
+.trip .container div span {
+    opacity: 0;
+    position: relative;
+    top:-100px;
+    transition-duration: 1s;
+}
+.trip .container div span:nth-child(2) {
+    transition-delay: 0.35s;
+}
+.trip .container div span:nth-child(3) {
+    transition-delay: 0.70s;
+}
+.trip .container div span:nth-child(4) {
+    transition-delay: 1s;
+}
+.trip .container div span.visib {
+    top: 0px; 
+    opacity: 1;
+}
+.trip .container div p:nth-child(2){
+    opacity: 0;
+    transition-delay: 0.30s;
+}
+.trip .container div p:nth-child(3){
+    opacity: 0;
+    transition-delay: 0.60s;
+}
+.trip .container div p:nth-child(4){
+    opacity: 0;
+    transition-delay: 0.90s;
+}
+.trip .container div p:nth-child(2).visib {
+    margin-left: 100px;
+    opacity: 1;
+}
+.trip .container div p:nth-child(3).visib {
+    margin-left: 200px;
+    opacity: 1;
+}
+.trip .container div p:nth-child(4).visib {
+    margin-left: 300px;
+    opacity: 1;
+}
+@media (max-width: 1100px) {
+    .trip .container div p:nth-child(2).visib {
+        margin-left: 0px;
+    }
+    .trip .container div p:nth-child(3).visib {
+        margin-left: 0px;
+    }
+    .trip .container div p:nth-child(4).visib {
+        margin-left: 0px;
+    }
+}
+.vv {
+    background-color: #c8e4e7; 
+    padding: 10px 20px;
+    border: 2px solid  var(--main-color);
+    border-radius: 20px;
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+    margin-right: 100px;
+    animation-name: example;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    position: relative;
+    font-size: 20px;
+}
+
+.hotel {
+    background-color: #d2fdff;
+    background-image: linear-gradient(45deg, #6b4848, transparent);
+}
+.hotel .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@media (max-width: 770px) {
+    .hotel .container {
+        flex-direction: column;
+    }
+    
+}
+.hotel .container div {
+    height: 100%;
+}
+.hotel .container div:nth-child(1) {
+    width: 660px;
+}
+.hotel .container div:nth-child(2) {
+    height: auto;
+}
+.hotel .container div:nth-child(2) p:nth-child(1) {
+    font-family: "Brush Script MT",cursive;
+    font-size: 50px;
+}
+.hotel .container div:nth-child(2) p {
+    font-size: 25px;
+}
+.hotel .container img {
+    width: 100%;
+    height: 100%;
+}

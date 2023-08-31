@@ -1,0 +1,87 @@
+.reservation .content {
+  display: flex;
+  flex-wrap: wrap;
+}
+.reservation .content .info {
+  flex: 2;
+  padding: 15px;
+}
+
+.reservation h3 {
+  font-size: 21px;
+  font-weight: 700;
+}
+.reservation .content .info form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.reservation .content .info form input {
+  padding: 15px 7px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.reservation
+  .content
+  .info
+  form
+  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  border: none;
+}
+.Date {
+  /* padding: 15px 7px; */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 90%;
+}
+.reservation .content .info form input::placeholder {
+  color: #9c9c9c;
+  font-size: 14px;
+}
+.reservation .content .info form a {
+  color: black;
+  text-decoration-line: underline;
+  padding: 10px 0;
+}
+button.next {
+  background: black;
+  color: var(--mainColorBackgruond);
+  border: none;
+  padding: 17px;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 400px;
+  margin: 20px auto;
+}
+
+.reservation .content .info .nameRegister {
+  display: flex;
+  /* justify-content: left;
+  gap: 40px; */
+  margin: 30px 0;
+  align-items: center;
+}
+
+.reservation .content .info .nameRegister .left,
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 50%;
+}
+.reservation .content .info .nameRegister .phone {
+  width: 90%;
+}
+.reservation .content .info input {
+  width: 90%;
+  display: inline-block;
+}
+/* .active {
+  transition: all 2s;
+} */
+.errormessage {
+  color: red;
+}
