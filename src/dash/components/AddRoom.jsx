@@ -39,8 +39,8 @@ const AddRoom = (props) => {
         throw await response;
       }
     } catch (error) {
-      seterr(error);
-      console.log(error);
+      seterr(error.response);
+      console.log(error.response);
     }
   };
 
@@ -150,7 +150,7 @@ const AddRoom = (props) => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
+                type="number"
                 label="Beds"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -243,6 +243,7 @@ const AddRoom = (props) => {
           </form>
         )}
       </Formik>
+      {err.data && <span style={{ color: "red" }}>{err.data.message}</span>}
     </Box>
   );
 };

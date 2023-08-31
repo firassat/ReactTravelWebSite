@@ -23,40 +23,32 @@ function ShowTrip() {
   let mainAdmin = localStorage.getItem("_auth_type") === "main_admin" ? 1 : 0;
   let token = localStorage.getItem("_auth");
   async function getUsers() {
-    const id = location.state.id;
-    if (mainAdmin) {
-      await axios
-        .get(
-          "http://127.0.0.1:8000/api/admin/getLatestTripReservations?trip_id=" +
-            id
-        )
-        .then((response) => response.data)
-        .then((data) => data.data)
-        .then((data) => {
-          setdata(data);
-        });
-    } else {
-      await axios
-        .get(
-          "http://127.0.0.1:8000/api/trip/getLatestReservations?trip_id=" + id,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((response) => response.data)
-        .then((data) => data.data)
-        .then((data) => {
-          setdata(data);
-        });
-    }
+    await axios
+      .post(
+        "http://127.0.0.1:8000/api/hotel/SeeAllReservations",
+        {},
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => response.data)
+      .then((data) => data.data)
+      .then((data) => {
+        setdata(data.data);
+      });
   }
   useEffect(() => {
     getUsers();
   }, []);
-
+  function getDate(date) {
+    const d = new Date(date);
+    const saveConverted = d.toUTCString();
+    return saveConverted;
+  }
+  console.log(data);
   return (
     <Box
       backgroundColor={colors.primary[400]}
@@ -70,7 +62,7 @@ function ShowTrip() {
       <BackButtom />
       <Box
         display="grid"
-        gridTemplateColumns="repeat(6, 14%)"
+        gridTemplateColumns="repeat(8, 10%)"
         borderBottom={`1px solid ${colors.primary[800]}`}
         p="20px "
         gap="20px"
@@ -79,25 +71,31 @@ function ShowTrip() {
           <Typography>user_id</Typography>
         </Box>
         <Box color={colors.grey[100]}>
+          <Typography>check_in</Typography>
+        </Box>
+        <Box color={colors.grey[100]}>
+          <Typography>check_out</Typography>
+        </Box>
+        <Box color={colors.grey[100]}>
           <Typography>adult</Typography>
         </Box>
         <Box color={colors.grey[100]}>
           <Typography>child</Typography>
         </Box>
         <Box color={colors.grey[100]}>
-          <Typography>money_spent</Typography>
+          <Typography>payment</Typography>
         </Box>
         <Box color={colors.grey[100]}>
-          <Typography>points_added</Typography>
+          <Typography>room_id</Typography>
         </Box>
         <Box color={colors.grey[100]}>
-          <Typography>departure_date</Typography>
+          <Typography>created_at</Typography>
         </Box>
       </Box>
       {data.map((e, i) => (
         <Box
           display="grid"
-          gridTemplateColumns="repeat(6, 14%)"
+          gridTemplateColumns="repeat(8, 10%)"
           borderBottom={`1px solid ${colors.primary[800]}`}
           p="20px "
           gap="20px"
@@ -106,19 +104,25 @@ function ShowTrip() {
             <Typography>{e.user_id}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.adult}</Typography>
+            <Typography>{e.check_in}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.child}</Typography>
+            <Typography>{e.check_out}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.money_spent}</Typography>
+            <Typography>{e.num_of_adults}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.points_added}</Typography>
+            <Typography>{e.num_of_children}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.departure_date}</Typography>
+            <Typography>{e.payment}</Typography>
+          </Box>
+          <Box color={colors.grey[100]}>
+            <Typography>{e.room_id}</Typography>
+          </Box>
+          <Box color={colors.grey[100]}>
+            <Typography>{getDate(e.created_at)}</Typography>
           </Box>
         </Box>
       ))}

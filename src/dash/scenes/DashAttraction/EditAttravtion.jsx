@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -9,8 +9,10 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import BackButtom from "../../components/BackButtom";
 import AvailableDays from "../../components/AvailableDays";
-
+import { tokens } from "../../../theme";
 const EditAttraction = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
   const [send, setsend] = useState(0);
@@ -309,7 +311,12 @@ const EditAttraction = () => {
               </Button>
             </Box>
             {send ? (
-              <Box className="sentSuccss">
+              <Box
+                className="sentSuccss"
+                sx={{
+                  backgroundColor: `${colors.primary[400]} !important `,
+                }}
+              >
                 <h2>Updates sent successfully, pending approval.</h2>
               </Box>
             ) : (

@@ -2,8 +2,12 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { tokens } from "../../theme";
+import { useTheme } from "@mui/material";
 
 export default function AvailableDays(props) {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [checked, setChecked] = React.useState(props.initial);
   props.setChecked(checked);
   const handleChange7 = (event) => {
@@ -125,6 +129,9 @@ export default function AvailableDays(props) {
       />
       <Box
         sx={{ display: "flex", flexDirection: "row", ml: 3, padding: "20px" }}
+        style={{
+          color: colors.grey[100],
+        }}
       >
         <FormControlLabel
           label="Saturday"

@@ -115,10 +115,14 @@ function ShowAttraction() {
   }
   return (
     data.available_days && (
-      <Box>
+      <Box
+        style={{
+          color: colors.grey[100],
+        }}
+      >
         <div className="dashboardshow">
           <ul
-            className="table trip"
+            className="table1 dashtrip"
             style={{
               borderRadius: "30px",
             }}

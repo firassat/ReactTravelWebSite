@@ -80,6 +80,9 @@ function AttAdmins() {
         padding: "20px 60px",
         width: "100%",
       }}
+      style={{
+        color: colors.grey[100],
+      }}
     >
       <Box
         sx={{

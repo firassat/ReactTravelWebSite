@@ -31,6 +31,10 @@ const Company = () => {
                 transform: "translate(-50%,0)",
               }
         }
+        style={{
+          color: colors.grey[100],
+          fontSize: "15px",
+        }}
       >
         <Box className="dashCompanyItems">
           <button onClick={() => setState(state === 1 ? 0 : 1)}>

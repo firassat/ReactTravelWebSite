@@ -6,29 +6,39 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
 
-import { useNavigate, useLocation } from "react-router-dom";
-import BackButtom from "../../components/BackButtom";
 import GetCity from "../../components/getCity";
+import InputDaysTrip from "../../components/InputDaysTrip";
 import { tokens } from "../../../theme";
-const AddHotel = () => {
+const EditHotel = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [err, seterr] = useState({});
-  const [send, setsend] = useState(0);
   const [city, setCity] = useState(0);
   const [Country, setCountry] = useState(0);
-  const [type, setType] = useState({});
-
-  const navigate = useNavigate();
+  const [send, setsend] = useState(0);
+  const [days_number, setdays_number] = useState(1);
+  // const [days_data, setdaysfata] = useState({});
+  // const [days_input, setdays_input] = useState(0);
   const token = localStorage.getItem("_auth");
-
+  const initialValues = {
+    name: props.data.name,
+    email: props.data.email,
+    phone_number: props.data.phone_number,
+    location: props.data.location,
+    details: props.data.details,
+    price_start_from: props.data.price_start_from,
+    website_url: props.data.website_url,
+    type_id: props.data.type_id,
+  };
   const handleFormSubmit = async (values) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/admin/createhotel",
+        "http://127.0.0.1:8000/api/hotel/editHotelDetails",
         {
+          id: props.data,
           ...values,
+
           city_id: city,
         },
         {
@@ -38,40 +48,35 @@ const AddHotel = () => {
           },
         }
       );
-      console.log(response);
+
       if (response.status === 200) {
         setsend(1);
         setTimeout(() => {
-          navigate("/dashHotel");
+          props.setReload((prev) => prev + 1);
+          props.setAddScreen([0, 0, 0, 0]);
         }, 5000);
       } else {
         throw await response;
       }
     } catch (error) {
-      seterr(error);
-      console.log(error.response);
+      seterr(error.response);
     }
   };
+  // const onSubmitDays = (e) => {
+  //   e.preventDefault();
+  //   for (let i = 1; i <= days_number; i++) {
+  //     days_data[`title_${i}`] = e.target[i - 1].value;
+  //     days_data[`details_${i}`] = e.target[i - 1].value;
+  //   }
 
-  const getType = async () => {
-    const response = await axios
-      .get("http://127.0.0.1:8000/api/admin/getHotelType", {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => res.data)
-      .then((res) => setType(res.data));
-  };
-  useEffect(() => {
-    getType();
-  }, []);
-
+  //   setdays_input(0);
+  // };
+  // useEffect(() => {
+  //   setdays_input(days_number);
+  // }, [days_number]);
   return (
     <Box m="40px auto" width="70%">
-      <Header title="Add Hotel" />
-      <BackButtom />
+      <Header title="Edit Trip" />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -204,7 +209,7 @@ const AddHotel = () => {
                 <MenuItem value={4}>4</MenuItem>
                 <MenuItem value={5}>5</MenuItem>
               </TextField>
-              <TextField
+              {/* <TextField
                 sx={{ gridColumn: "span 2" }}
                 select
                 label="type"
@@ -217,7 +222,7 @@ const AddHotel = () => {
                   type.map((e) => {
                     return <MenuItem value={e.id}>{e.name}</MenuItem>;
                   })}
-              </TextField>
+              </TextField> */}
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -230,7 +235,7 @@ const AddHotel = () => {
                     backgroundColor: `${colors.primary[400]} !important `,
                   }}
                 >
-                  <h2> Added successfully</h2>
+                  <h2>Updates sent successfully, pending approval.</h2>
                 </Box>
               ) : (
                 ""
@@ -260,20 +265,5 @@ const checkoutSchema = yup.object().shape({
   // wallet: yup.string().required(),
   // points: yup.string().required(),
 });
-const initialValues = {
-  // name: "",
-  // email: data.email,
-  // phone_number: data.phone_number,
-  // details: data.details,
-  // adult_ability_per_day: data.adult_ability_per_day,
-  // adult_price: data.adult_price,
-  // available_days: data.available_days,
-  // child_ability_per_day: data.child_ability_per_day,
-  // child_price: data.child_price,
-  // close_at: data.close_at,
-  // location: data.location,
-  // num_of_ratings: data.num_of_ratings,
-  // open_at: data.open_at,
-  // website_url: data.website_url,
-};
-export default AddHotel;
+
+export default EditHotel;

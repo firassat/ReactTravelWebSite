@@ -33,7 +33,7 @@ const TopbarSec = (props) => {
       alignItems={"center"}
     >
       {/* logo */}
-      <Box marginLeft={"10px"}>
+      <Box>
         {theme.palette.mode === "dark" ? (
           <img height={"80px"} alt="logo" src={require("./logo2.png")} />
         ) : (
@@ -50,7 +50,6 @@ const TopbarSec = (props) => {
             width: 0,
           },
         }}
-        marginRight={"35px"}
       >
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (

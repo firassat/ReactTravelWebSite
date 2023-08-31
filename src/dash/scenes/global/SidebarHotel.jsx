@@ -115,19 +115,19 @@ const SidebarTrip = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="HOME"
-              to="/dashTrip"
+              to="/dashHotel"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Reservations"
-              to="/dashTrip/reservationsTrip"
+              to="/dashHotel/reservationsHotel"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Box
+            {/* <Box
               color={"brown"}
               px={"15px"}
               position="absolute"
@@ -147,7 +147,7 @@ const SidebarTrip = () => {
               ) : (
                 ""
               )}
-            </Box>
+            </Box> */}
           </Box>
         </Menu>
       </Sidebar>

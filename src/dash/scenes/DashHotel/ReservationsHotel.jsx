@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Brightness1Icon from "@mui/icons-material/Brightness1";
 import {
   Box,
   IconButton,
@@ -21,25 +20,35 @@ function ShowTrip() {
 
   const navigate = useNavigate();
 
+  let mainAdmin = localStorage.getItem("_auth_type") === "main_admin" ? 1 : 0;
   let token = localStorage.getItem("_auth");
   async function getUsers() {
     await axios
-      .get("http://127.0.0.1:8000/api/trip/getLatestReservations", {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post(
+        "http://127.0.0.1:8000/api/hotel/SeeAllReservations",
+        {},
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => response.data)
       .then((data) => data.data)
       .then((data) => {
-        setdata(data);
+        setdata(data.data);
       });
   }
   useEffect(() => {
     getUsers();
   }, []);
-
+  function getDate(date) {
+    const d = new Date(date);
+    const saveConverted = d.toUTCString();
+    return saveConverted;
+  }
+  console.log(data);
   return (
     <Box
       backgroundColor={colors.primary[400]}
@@ -53,7 +62,7 @@ function ShowTrip() {
       <BackButtom />
       <Box
         display="grid"
-        gridTemplateColumns="repeat(7, 12%)"
+        gridTemplateColumns="repeat(8, 10%)"
         borderBottom={`1px solid ${colors.primary[800]}`}
         p="20px "
         gap="20px"
@@ -62,7 +71,10 @@ function ShowTrip() {
           <Typography>user_id</Typography>
         </Box>
         <Box color={colors.grey[100]}>
-          <Typography>description</Typography>
+          <Typography>check_in</Typography>
+        </Box>
+        <Box color={colors.grey[100]}>
+          <Typography>check_out</Typography>
         </Box>
         <Box color={colors.grey[100]}>
           <Typography>adult</Typography>
@@ -74,60 +86,43 @@ function ShowTrip() {
           <Typography>payment</Typography>
         </Box>
         <Box color={colors.grey[100]}>
-          <Typography>points_added</Typography>
+          <Typography>room_id</Typography>
         </Box>
         <Box color={colors.grey[100]}>
-          <Typography>departure_date</Typography>
+          <Typography>created_at</Typography>
         </Box>
       </Box>
       {data.map((e, i) => (
         <Box
           display="grid"
-          gridTemplateColumns="repeat(7, 12%)"
+          gridTemplateColumns="repeat(8, 10%)"
           borderBottom={`1px solid ${colors.primary[800]}`}
           p="20px "
           gap="20px"
-          position={"relative"}
         >
           <Box color={colors.greenAccent[500]}>
             <Typography>{e.user_id}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.description}</Typography>
+            <Typography>{e.check_in}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.adult}</Typography>
+            <Typography>{e.check_out}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.child}</Typography>
+            <Typography>{e.num_of_adults}</Typography>
+          </Box>
+          <Box color={colors.grey[100]}>
+            <Typography>{e.num_of_children}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
             <Typography>{e.payment}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.points_added}</Typography>
+            <Typography>{e.room_id}</Typography>
           </Box>
           <Box color={colors.grey[100]}>
-            <Typography>{e.departure_date}</Typography>
-          </Box>
-          <Box
-            color={"brown"}
-            px={"15px"}
-            position="absolute"
-            right="0"
-            top="49%"
-            alignItems={"center"}
-            display={"flex"}
-          >
-            {!e.seen ? (
-              <Brightness1Icon
-                sx={{
-                  fontSize: "10px !important",
-                }}
-              />
-            ) : (
-              ""
-            )}
+            <Typography>{getDate(e.created_at)}</Typography>
           </Box>
         </Box>
       ))}

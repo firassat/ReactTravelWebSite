@@ -71,9 +71,13 @@ function TripDetails() {
 
   return (
     data.dates && (
-      <Box>
+      <Box
+        style={{
+          color: colors.grey[100],
+        }}
+      >
         <div className="dashboardshow">
-          <ul className="table trip">
+          <ul className="table1 dashtrip">
             <li>
               <h6>description: </h6> <h6>{data.description}</h6>
             </li>

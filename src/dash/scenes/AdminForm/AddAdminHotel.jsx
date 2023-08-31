@@ -21,13 +21,14 @@ const AddAdminHotel = (props) => {
       );
 
       if (response.status === 200) {
+        console.log(response);
         props.setReload((prev) => prev + 1);
         props.setAddScreen([0, 0, 0]);
       } else {
         throw await response;
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     }
   };
 

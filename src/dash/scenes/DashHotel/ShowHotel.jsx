@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../../theme";
 import UploadPhoto from "../../components/UploadPhoto";
+import EditHotel from "./EditHotel";
 
 function ShowHotel() {
   const theme = useTheme();
@@ -31,7 +32,7 @@ function ShowHotel() {
   }
   let [HotelRooms, setHotelRooms] = useState([]);
 
-  let [addScreen, setAddScreen] = useState([0, 0, 0]);
+  let [addScreen, setAddScreen] = useState([0, 0, 0, 0]);
   let [reload, setReload] = useState([]);
 
   const navigate = useNavigate();
@@ -140,13 +141,13 @@ function ShowHotel() {
       });
     if (response?.status === 200) {
       setReload((priv) => priv + 1);
-      setAddScreen([0, 0, 0]);
+      setAddScreen([0, 0, 0, 0]);
     }
   };
   function deleteF(url, id) {
     axios.post(
       url,
-      { selectedFacility: id },
+      { selectedFacility: id, id: id },
       {
         headers: {
           Accept: "application/json",
@@ -158,34 +159,6 @@ function ShowHotel() {
     setReload((priv) => priv + 1);
   }
 
-  // if (!data) {
-  //   return (
-  //     <Box
-  //       sx={{
-  //         position: "absolute",
-  //         top: "50%",
-  //         left: "50%",
-  //         transform: "translate(-50%,-50%)",
-  //         textAlign: "center",
-  //       }}
-  //     >
-  //       <h3>"You should register your company before doing this operation!"</h3>
-  //       <Box
-  //         className="deletebutoomShow edit"
-  //         backgroundColor="#9E9E9E"
-  //         margin="20px auto"
-  //         onClick={async () => {
-  //           navigate("/dashTrip/addTripCompany", {
-  //             state: data,
-  //           });
-  //         }}
-  //       >
-  //         Add
-  //       </Box>
-  //     </Box>
-  //   );
-  // }
-
   if (!data.Hotel_info) {
     return (
       <Box
@@ -195,6 +168,9 @@ function ShowHotel() {
           left: "50%",
           transform: "translate(-50%,-50%)",
           textAlign: "center",
+        }}
+        style={{
+          color: colors.grey[100],
         }}
       >
         <h3>"You should register your hotel before doing this operation!"</h3>
@@ -215,9 +191,13 @@ function ShowHotel() {
   }
   return (
     data.Hotel_info && (
-      <Box>
+      <Box
+        style={{
+          color: colors.grey[100],
+        }}
+      >
         <div className="dashboardshow">
-          <ul className="table trip">
+          <ul className="table1 dashtrip">
             <li>
               <h6>Name </h6> <h6>{data.Hotel_info[0].name}</h6>
             </li>
@@ -271,7 +251,7 @@ function ShowHotel() {
                       bottom: "calc(50% - 1.5rem)",
                       left: "-20%",
                     }}
-                    onClick={() => setAddScreen([0, 0, !addScreen[1]])}
+                    onClick={() => setAddScreen([0, 0, !addScreen[1], 0])}
                   >
                     <AddIcon />
                   </IconButton>
@@ -288,7 +268,7 @@ function ShowHotel() {
                           top: "25px",
                           right: "25px",
                         }}
-                        onClick={() => setAddScreen([0, 0, 0])}
+                        onClick={() => setAddScreen([0, 0, 0, 0])}
                       >
                         <CloseIcon />
                       </IconButton>
@@ -327,7 +307,7 @@ function ShowHotel() {
 
                   {data.Hotel_info[0].facilities.map((e, i) => (
                     <Box
-                      p="15px "
+                      p="15px !important"
                       key={`${e.id}-${i}`}
                       position={"relative"}
                       textAlign={"center"}
@@ -377,7 +357,7 @@ function ShowHotel() {
                       bottom: "calc(50% - 1rem)",
                       left: "-20%",
                     }}
-                    onClick={() => setAddScreen([!addScreen[0], 0, 0])}
+                    onClick={() => setAddScreen([!addScreen[0], 0, 0, 0])}
                   >
                     <AddIcon />
                   </IconButton>
@@ -394,7 +374,7 @@ function ShowHotel() {
                           top: "25px",
                           right: "25px",
                         }}
-                        onClick={() => setAddScreen([!addScreen[0], 0, 0])}
+                        onClick={() => setAddScreen([!addScreen[0], 0, 0, 0])}
                       >
                         <CloseIcon />
                       </IconButton>
@@ -402,6 +382,7 @@ function ShowHotel() {
                         url={"http://127.0.0.1:8000/api/hotel/addPhoto"}
                         id={data.Hotel_info[0].id}
                         setReload={setReload}
+                        setAddScreen={setAddScreen}
                       />
                     </Box>
                   ) : null}
@@ -426,7 +407,10 @@ function ShowHotel() {
                             color: "brown",
                           }}
                           onClick={() => {
-                            // deletePhoto(item.id);
+                            deleteF(
+                              "http://127.0.0.1:8000/api/hotel/DeleteHotelPhoto",
+                              item.id
+                            );
                           }}
                         >
                           <DeleteIcon />
@@ -455,7 +439,7 @@ function ShowHotel() {
                       bottom: "calc(50% - 1rem)",
                       left: "-20%",
                     }}
-                    onClick={() => setAddScreen([0, !addScreen[1], 0])}
+                    onClick={() => setAddScreen([0, !addScreen[1], 0, 0])}
                   >
                     <AddIcon />
                   </IconButton>
@@ -472,7 +456,7 @@ function ShowHotel() {
                           top: "25px",
                           right: "25px",
                         }}
-                        onClick={() => setAddScreen([0, !addScreen[1], 0])}
+                        onClick={() => setAddScreen([0, !addScreen[1], 0, 0])}
                       >
                         <CloseIcon />
                       </IconButton>
@@ -501,25 +485,45 @@ function ShowHotel() {
                   </Box>
                   {HotelRooms.Room.map((e, i) => (
                     <Box
-                      display="grid"
-                      gridTemplateColumns="repeat(4, 20%)"
-                      borderBottom={`1px solid ${colors.primary[800]}`}
-                      p="15px !important"
-                      gap="20px"
-                      key={`${e.id}-${i}`}
                       position={"relative"}
-                      textAlign={"center"}
-                      justifyContent={"center"}
+                      key={`${e.id}-${i}`}
+                      style={{ color: colors.grey[100] }}
                     >
-                      <Typography>{e.type.name}</Typography>
-                      <Typography>{e.location}</Typography>
-                      <Typography>{e.Beds}</Typography>
-                      <Typography>{e.Sleeps}</Typography>
+                      <Link
+                        to={"/dashHotel/showRoom"}
+                        state={{
+                          room_id: e.id,
+                          hotel_id: data.Hotel_info[0].id,
+                        }}
+                      >
+                        <Box
+                          display="grid"
+                          gridTemplateColumns="repeat(4, 20%)"
+                          borderBottom={`1px solid ${colors.primary[800]}`}
+                          p="15px !important"
+                          gap="20px"
+                          textAlign={"center"}
+                          justifyContent={"center"}
+                        >
+                          <Typography style={{ color: colors.grey[100] }}>
+                            {e.type.name}
+                          </Typography>
+                          <Typography style={{ color: colors.grey[100] }}>
+                            {e.location}
+                          </Typography>
+                          <Typography style={{ color: colors.grey[100] }}>
+                            {e.Beds}
+                          </Typography>
+                          <Typography style={{ color: colors.grey[100] }}>
+                            {e.Sleeps}
+                          </Typography>
+                        </Box>
+                      </Link>
                       <IconButton
                         sx={{
                           position: "absolute",
                           bottom: "calc(50% - 1rem)",
-                          right: "-10px",
+                          left: "-10px",
                           color: "brown",
                         }}
                         onClick={() => {
@@ -547,9 +551,9 @@ function ShowHotel() {
           <Box
             className="deletebutoomShow"
             onClick={() => {
-              axios.get(
-                "http://127.0.0.1:8000/api/admin/deleteTheCompany?id=" + data.id
-              );
+              axios.post("http://127.0.0.1:8000/api/admin/deleteHotel", {
+                id: data.Hotel_info[0].id,
+              });
               navigate("/dash/company");
             }}
           >
@@ -558,19 +562,34 @@ function ShowHotel() {
           <Box
             className="deletebutoomShow edit"
             backgroundColor="#9E9E9E"
-            onClick={async () => {
-              if (mainAdmin)
-                navigate("/dash/editTrip", {
-                  state: data,
-                });
-              else
-                navigate("/dashTrip/editTrip", {
-                  state: data,
-                });
+            onClick={() => {
+              setAddScreen([0, 0, 0, 1]);
             }}
           >
             Edit
           </Box>
+          {addScreen[3] ? (
+            <Box
+              className="sentSuccss"
+              sx={{ backgroundColor: colors.primary[400] }}
+            >
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: "25px",
+                  right: "25px",
+                }}
+                onClick={() => setAddScreen([0, 0, 0, 0])}
+              >
+                <CloseIcon />
+              </IconButton>
+              <EditHotel
+                setReload={setReload}
+                setAddScreen={setAddScreen}
+                data={data.Hotel_info[0]}
+              />
+            </Box>
+          ) : null}
         </Box>
       </Box>
     )

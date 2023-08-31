@@ -13,8 +13,10 @@ const HotelCompany = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [data, setdata] = useState({});
+  const [data2, setdata2] = useState({});
   let [addScreen, setAddScreen] = useState([0, 0, 0]);
   let [reload, setReload] = useState([]);
+  let token = localStorage.getItem("_auth");
 
   async function gitFacil() {
     await axios
@@ -24,6 +26,15 @@ const HotelCompany = () => {
   }
   useEffect(() => {
     gitFacil();
+  }, [reload]);
+  async function gitFeature() {
+    await axios
+      .get("http://127.0.0.1:8000/api/admin/getAllFeatures")
+      .then((res) => res.data)
+      .then((res) => setdata2(res.data));
+  }
+  useEffect(() => {
+    gitFeature();
   }, [reload]);
 
   const columns = [
@@ -85,6 +96,21 @@ const HotelCompany = () => {
       },
     },
   ];
+
+  function deleteF(url, id) {
+    axios.post(
+      url,
+      { id: id },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    //.then((res) => console.log(res));
+    setReload((priv) => priv + 1);
+  }
   return (
     <Box
       m="10px 0 40px 0"
@@ -106,7 +132,12 @@ const HotelCompany = () => {
         url="http://127.0.0.1:8000/api/admin/AllHotels"
         columns={columns}
       />
-      <Box p={"30px"}>
+      <Box
+        p={"30px"}
+        style={{
+          color: colors.grey[100],
+        }}
+      >
         <Typography>Facilities available</Typography>
 
         {data[0] && (
@@ -177,7 +208,102 @@ const HotelCompany = () => {
                     right: "-20px",
                     color: "brown",
                   }}
-                  onClick={() => {}}
+                  onClick={() =>
+                    deleteF(
+                      "http://127.0.0.1:8000/api/admin/DeleteFacility",
+                      e.id
+                    )
+                  }
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
+      <Box
+        p={"30px"}
+        style={{
+          color: colors.grey[100],
+        }}
+      >
+        <Typography>Feature available</Typography>
+
+        {data2[0] && (
+          <Box
+            backgroundColor={colors.primary[400]}
+            p="15px 25px"
+            alignItems={"center"}
+            textAlign={"center"}
+            width="100%"
+            position={"relative"}
+            borderRadius={"30px"}
+            display={"flex"}
+            gap="25px"
+            flexWrap={"wrap"}
+          >
+            <IconButton
+              sx={{
+                position: "absolute",
+                bottom: "calc(50% - 1rem)",
+                left: "-10%",
+              }}
+              onClick={() => setAddScreen([!addScreen[0], 0, 0])}
+            >
+              <AddIcon />
+            </IconButton>
+            {addScreen[0] ? (
+              <Box
+                className="sentSuccss"
+                sx={{
+                  backgroundColor: `${colors.primary[400]} !important `,
+                }}
+              >
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: "25px",
+                    right: "25px",
+                  }}
+                  onClick={() => setAddScreen([0, 0, 0])}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <AddInput
+                  setAddScreen={setAddScreen}
+                  setReload={setReload}
+                  inputNumber={1}
+                  url={"http://127.0.0.1:8000/api/admin/AddFeature"}
+                >
+                  <input type="text" name="name" placeholder="name" />
+                </AddInput>
+              </Box>
+            ) : null}
+
+            {data2.map((e, i) => (
+              <Box
+                p="15px "
+                key={`${e.id}-${i}`}
+                position={"relative"}
+                textAlign={"center"}
+                justifyContent={"center"}
+              >
+                <Typography>{e.name}</Typography>
+
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    bottom: "calc(50% - 1rem)",
+                    right: "-20px",
+                    color: "brown",
+                  }}
+                  onClick={() =>
+                    deleteF(
+                      "http://127.0.0.1:8000/api/admin/DeleteFeature",
+                      e.id
+                    )
+                  }
                 >
                   <DeleteIcon />
                 </IconButton>

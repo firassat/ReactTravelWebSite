@@ -18,6 +18,7 @@ const UploadPhoto = (props) => {
           photo: aa,
           trip_id: props.id,
           hotel_id: props.id,
+          room_id: props.room_id,
         },
         {
           headers: {
@@ -42,6 +43,7 @@ const UploadPhoto = (props) => {
     <div>
       <input
         type="file"
+        class="form-control-file"
         onChange={handleFileUpload}
         style={{ color: "black" }}
       />

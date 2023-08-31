@@ -57,7 +57,7 @@ function ShowTrip() {
   useEffect(() => {
     getUsers();
   }, []);
-
+  console.log(data);
   async function getTrip() {
     if (mainAdmin) {
       await axios
@@ -107,6 +107,16 @@ function ShowTrip() {
     });
     setReload((priv) => priv + 1);
   };
+  function unsee() {
+    if (data.num_of_unseen_reservations >= 0 && !mainAdmin) {
+      navigate("/dashTrip", {
+        state: data.num_of_unseen_reservations,
+      });
+    }
+  }
+  useEffect(() => {
+    unsee();
+  }, [data.num_of_unseen_reservations]);
 
   if (!data) {
     return (
@@ -135,11 +145,16 @@ function ShowTrip() {
       </Box>
     );
   }
+
   return (
     data.admin && (
-      <Box>
+      <Box
+        style={{
+          color: colors.grey[100],
+        }}
+      >
         <div className="dashboardshow">
-          <ul className="table trip">
+          <ul className="table1 dashtrip">
             <li>
               <h6>Name </h6> <h6>{data.name}</h6>
             </li>
@@ -164,9 +179,9 @@ function ShowTrip() {
                   >
                     <Box
                       display="grid"
-                      gridTemplateColumns="repeat(7, 10%)"
+                      gridTemplateColumns="repeat(7, 12%)"
                       borderBottom={`1px solid ${colors.primary[800]}`}
-                      p="10px "
+                      p="15px !important"
                       gap="20px"
                     >
                       <Box color={colors.greenAccent[500]}>
@@ -204,10 +219,11 @@ function ShowTrip() {
                         >
                           <Box
                             display="grid"
-                            gridTemplateColumns="repeat(7, 10%)"
+                            gridTemplateColumns="repeat(7, 12%)"
                             borderBottom={`1px solid ${colors.primary[800]}`}
                             p="15px !important"
                             gap="20px"
+                            alignItems={"center"}
                           >
                             <Box color={colors.greenAccent[500]}>
                               <Typography>{e.id}</Typography>
@@ -239,7 +255,7 @@ function ShowTrip() {
                             sx={{
                               position: "absolute",
                               bottom: "calc(50% - 1rem)",
-                              left: "-25px",
+                              left: "-20px",
                               color: "brown",
                             }}
                             onClick={() => {

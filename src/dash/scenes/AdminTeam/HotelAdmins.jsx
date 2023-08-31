@@ -59,11 +59,15 @@ function HotelAdmins() {
   };
   console.log(repositories);
   const deleteInput = (url, id) => {
-    const response = axios.get(url + id, {
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    const response = axios.post(
+      url,
+      { id: id },
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
     setReload((priv) => priv + 1);
   };
 
@@ -82,6 +86,9 @@ function HotelAdmins() {
         top: "10%",
         padding: "20px 60px",
         width: "100%",
+      }}
+      style={{
+        color: colors.grey[100],
       }}
     >
       <Box
@@ -117,7 +124,7 @@ function HotelAdmins() {
               <CloseIcon />
             </IconButton>
             <AddAdminHotel
-              url={"http://127.0.0.1:8000/api/admin/makeNewAdmin"}
+              url={"http://127.0.0.1:8000/api/admin/makeNewAdminHotel"}
               setReload={setReload}
               setAddScreen={setAddScreen}
             />
@@ -176,7 +183,7 @@ function HotelAdmins() {
                 }}
                 onClick={() => {
                   deleteInput(
-                    "http://127.0.0.1:8000/api/admin/deleteAdmin?id=",
+                    "http://127.0.0.1:8000/api/admin/deleteAdmin",
                     e.id
                   );
                 }}

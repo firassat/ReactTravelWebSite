@@ -1,11 +1,13 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { tokens } from "../../../theme";
 function Nav() {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const location = useLocation();
   let [data, setdata] = useState([]);
@@ -20,7 +22,7 @@ function Nav() {
     url2 = "http://127.0.0.1:8000/api/admin/acceptTripCompanyUpdate";
   } else if (repo.type === "hotel_company") {
     url = "http://127.0.0.1:8000/api/admin/getHotelUpdatingDetails?id=";
-    url2 = "http://127.0.0.1:8000/api/admin/acceptUpdate";
+    url2 = "http://127.0.0.1:8000/api/admin/acceptUpdateHotel";
   }
 
   async function getUsers() {
@@ -71,7 +73,7 @@ function Nav() {
         url = "http://127.0.0.1:8000/api/admin/getTripCompanyDetails?id=";
         id = data.trip_company_id;
       } else if (repo.type === "hotel_company") {
-        url = "http://127.0.0.1:8000/api/admin/getHotelUpdatingDetails?id=";
+        url = "http://127.0.0.1:8000/api/admin/OneHotelByAdmin";
       }
 
       await axios
@@ -91,7 +93,11 @@ function Nav() {
 
   return (
     data.admin && (
-      <Box>
+      <Box
+        style={{
+          color: colors.grey[100],
+        }}
+      >
         <div className="dashboardshow">
           <h5 style={{ margin: "5px auto", padding: "20px" }}>
             {`the admin "${
@@ -103,7 +109,7 @@ function Nav() {
                   data.add_or_update ? "update" : "add"
                 } his company's information`}
           </h5>
-          <ul className="table trip">
+          <ul className="table1 dashtrip">
             <li>
               <h6>Admin Email </h6> <h6>{data.admin.user_name}</h6>
             </li>

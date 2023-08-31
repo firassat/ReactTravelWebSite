@@ -1,12 +1,14 @@
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import HotelAdmins from "./HotelAdmins";
 import FlightAdmins from "./FlightAdmins";
 import TripAdmins from "./TripAdmins";
 import AttAdmins from "./AttAdmins";
-
+import { tokens } from "../../../theme";
 const AdminTeam = () => {
   const [state, setState] = useState(0);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   return (
     <Box sx={{ position: "relative", minHeight: "100%" }}>
       <Box
@@ -27,6 +29,10 @@ const AdminTeam = () => {
                 transform: "translate(-50%,0)",
               }
         }
+        style={{
+          color: colors.grey[100],
+          fontSize: "15px",
+        }}
       >
         <Box className="dashCompanyItems">
           <button onClick={() => setState(state === 1 ? 0 : 1)}>

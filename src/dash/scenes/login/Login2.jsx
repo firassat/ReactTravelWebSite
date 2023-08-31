@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../../pages/Login/login.css";
+import "../../../website/pages/Login/login.css";
 import Logo from "../../../assets/logo.png";
 import { useSignIn } from "react-auth-kit";
 import axios from "axios";
@@ -62,6 +62,11 @@ const Login2 = () => {
       if (response.data.admin.admin_type === "hotel_admin") {
         setTimeout(() => {
           navigate("/dashHotel");
+        }, 1000);
+      }
+      if (response.data.admin.admin_type === "flight_admin") {
+        setTimeout(() => {
+          navigate("/dashFlight");
         }, 1000);
       }
     } else {
