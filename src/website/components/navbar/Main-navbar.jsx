@@ -117,8 +117,7 @@ const MainNavbar = (props) => {
 
   useEffect(() => {
     if (location && location.pathname !== "/") {
-      const navbarState = localStorage.getItem("NavbarState") || "main-navbar";
-      setNavbarState(navbarState);
+      setNavbarState("second-nav");
     }
   }, [navbarState, location]);
 
